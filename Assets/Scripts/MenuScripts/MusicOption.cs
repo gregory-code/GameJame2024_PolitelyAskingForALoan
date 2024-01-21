@@ -12,7 +12,7 @@ public class MusicOption : MonoBehaviour
 
     [SerializeField] Slider ownerSlider;
 
-    //[SerializeField] muteButton muteScript;
+    [SerializeField] MuteButton muteButton;
 
     public void Start()
     {
@@ -25,7 +25,7 @@ public class MusicOption : MonoBehaviour
         MasterMixer.SetFloat(mixerName, Mathf.Log10(sliderValue) * 20);
         ownerSlider.value = sliderValue;
 
-        //muteScript.CheckMute();
+        muteButton.CheckMute();
     }
 
     public float GetSliderLevel()
