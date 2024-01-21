@@ -37,7 +37,6 @@ public class PlayerMove : MonoBehaviour
 
     private void MoveInput(Vector2 inputVector, Vector3 cameraFoward)
     {
-        Debug.Log(inputVector);
         characterController.Move(GetMoveDir(inputVector) * currentSpeed * Time.deltaTime);
     }
 
