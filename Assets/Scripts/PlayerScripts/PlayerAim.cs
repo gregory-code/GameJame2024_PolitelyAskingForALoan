@@ -6,12 +6,6 @@ public class PlayerAim : MonoBehaviour
 {
     RaycastHit hit;
 
-    void Start()
-    {
-        
-    }
-
-
     void Update()
     {
         Vector3 fowardTransform = transform.TransformDirection(Vector3.forward);

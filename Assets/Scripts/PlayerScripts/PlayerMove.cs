@@ -18,7 +18,7 @@ public class PlayerMove : MonoBehaviour
     private void Start()
     {
         myPlayer.onMoveInput += MoveInput;
-        myPlayer.onMouseHoverInput += RotateInput;
+        myPlayer.onMouseRaycast += Rotate;
     }
 
     private void Update()
@@ -26,9 +26,9 @@ public class PlayerMove : MonoBehaviour
         MoveGravity();
     }
 
-    private void RotateInput(Vector3 hitVector)
+    private void Rotate(Vector3 targetVector)
     {
-        Vector3 lookDirection = hitVector - transform.position;
+        Vector3 lookDirection = targetVector - transform.position;
         lookDirection.y = 0;
 
         Quaternion rotate = Quaternion.LookRotation(lookDirection);
