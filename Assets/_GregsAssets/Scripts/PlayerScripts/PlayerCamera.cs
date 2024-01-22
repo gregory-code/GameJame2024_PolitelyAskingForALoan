@@ -29,10 +29,21 @@ public class PlayerCamera : MonoBehaviour
     float pitch;
     float yaw;
 
+    [SerializeField] float clampMinRegular;
+    [SerializeField] float clampMaxRegular;
+
+    [SerializeField] float clampMinADS;
+    [SerializeField] float clampMaxADS;
+
+    float clampMin;
+    float clampMax;
+
     bool bAiming = false;
 
     public void Start()
     {
+        clampMin = clampMinRegular;
+        clampMax = clampMaxRegular;
         player.onAim += AimInput;
         currentArmLength = closeArmLength;
     }
@@ -46,6 +57,9 @@ public class PlayerCamera : MonoBehaviour
     private void AimInput(bool state)
     {
         bAiming = state;
+
+        clampMin = state ? clampMinADS : clampMinRegular;
+        clampMax = state ? clampMaxADS : clampMaxRegular;
     }
 
     public Vector3 GetCameraFoward()
@@ -72,7 +86,7 @@ public class PlayerCamera : MonoBehaviour
     {
         Vector3 cameraPitch = this.cameraPitch.localEulerAngles;
         pitch -= lookInputY * Time.deltaTime * verticalRotSpeed;
-        pitch = Mathf.Clamp(pitch, -5, 60);
+        pitch = Mathf.Clamp(pitch, clampMin, clampMax);
         cameraPitch.x = pitch;
         this.cameraPitch.localEulerAngles = cameraPitch;
     }

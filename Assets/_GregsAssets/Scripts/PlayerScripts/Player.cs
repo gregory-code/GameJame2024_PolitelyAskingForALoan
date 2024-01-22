@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.Rendering.HighDefinition;
 public class Player : MonoBehaviour
 {
     [SerializeField] PlayerCamera playerCamera;
+    [SerializeField] PlayerInventory playerInventory;
     
     PlayerControls playerControls;
 
@@ -30,13 +32,39 @@ public class Player : MonoBehaviour
     private bool bInventory = false;
     private Transform targetNPC = null;
 
+    [SerializeField] ItemBase nothingItem;
+    [SerializeField] ItemBase gunItem;
+
+    [SerializeField] GameObject[] itemGameObjects;
+
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        playerInventory.AddItem(nothingItem);
+        playerInventory.AddItem(gunItem);
+
+        ItemSlot[] slots = playerInventory.GetSlots();
+        foreach(ItemSlot slot in slots)
+        {
+            slot.onSelect += SelectItem;
+        }
+
         playerControls = new PlayerControls();
         playerControls.Player.Enable();
+    }
+
+    private void SelectItem(ItemBase item)
+    {
+        if (item == null)
+            return;
+
+        foreach(GameObject itemGameObject in itemGameObjects)
+        {
+            itemGameObject.SetActive(false);
+        }
+        itemGameObjects[item.GetID()].SetActive(true);
     }
 
     void Update()
@@ -102,6 +130,11 @@ public class Player : MonoBehaviour
             bInventory = !bInventory;
             onInventory?.Invoke(bInventory);
         }
+    }
+
+    private void AddItem(ItemBase itemToAdd)
+    {
+        playerInventory.AddItem(itemToAdd);
     }
 
     private void MouseRayCastInput()

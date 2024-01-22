@@ -8,11 +8,30 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] Player player;
     [SerializeField] CanvasGroup inventoryGroup;
 
+    [SerializeField] ItemSlot[] itemSlots;
+
     bool bInventory;
 
     void Start()
     {
         player.onInventory += ToggleInventory;
+    }
+
+    public void AddItem(ItemBase itemToAdd)
+    {
+        foreach(ItemSlot slot in itemSlots)
+        {
+            if(slot.HasItem() == false)
+            {
+                slot.GetItem(itemToAdd);
+                return;
+            }
+        }
+    }
+
+    public ItemSlot[] GetSlots()
+    {
+        return itemSlots;
     }
 
     private void LateUpdate()
