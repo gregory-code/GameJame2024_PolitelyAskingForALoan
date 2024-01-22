@@ -44,7 +44,7 @@ public class PlayerMove : MonoBehaviour
 
             cameraFoward.y = 0;
             Quaternion targetRotation = Quaternion.LookRotation(cameraFoward);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, (rotateSpeed * 2) * Time.deltaTime);
         }
     }
 

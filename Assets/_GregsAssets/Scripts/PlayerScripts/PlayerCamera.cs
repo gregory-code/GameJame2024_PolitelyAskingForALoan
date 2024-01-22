@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 public class PlayerCamera : MonoBehaviour
 {
     [SerializeField] Player player;
@@ -79,8 +80,8 @@ public class PlayerCamera : MonoBehaviour
     private void CameraFollow()
     {
         cameraTrans.position = cameraArm.position - cameraTrans.forward * currentArmLength;
-
-        transform.position = Vector3.Lerp(transform.position, followTransform.position, (1 - followDamping) * Time.deltaTime * 20f);
+        float speed = (bAiming) ? 5 : (1 - followDamping);
+        transform.position = Vector3.Lerp(transform.position, followTransform.position, speed * Time.deltaTime * 20f);
     }
 
     private void LerpCameraLength()
@@ -101,7 +102,8 @@ public class PlayerCamera : MonoBehaviour
         }
         else if (bAiming)
         {
-            desiredLength = closeArmLength / 2.5f;
+            desiredLength = closeArmLength / 2f;
+            speed *= 2;
         }
 
         currentArmLength = Mathf.Lerp(currentArmLength, desiredLength, speed * Time.deltaTime);
