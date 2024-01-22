@@ -22,8 +22,12 @@ public class Player : MonoBehaviour
     public delegate void OnAim(bool state);
     public event OnAim onAim;
 
+    public delegate void OnInventory(bool state);
+    public event OnInventory onInventory;
+
     private bool bInChat = false;
     private bool bAiming = false;
+    private bool bInventory = false;
     private Transform targetNPC = null;
 
     void Awake()
@@ -67,6 +71,9 @@ public class Player : MonoBehaviour
 
     public void InteractInput(InputAction.CallbackContext context)
     {
+        if (bInventory)
+            return;
+
         if (context.performed)
         {
             onInteract?.Invoke();
@@ -75,10 +82,25 @@ public class Player : MonoBehaviour
 
     public void AimInput(InputAction.CallbackContext context)
     {
+        if (bInventory)
+            return;
+
         if (context.performed || context.canceled)
         {
             bAiming = !bAiming;
             onAim?.Invoke(bAiming);
+        }
+    }
+
+    public void InventoryInput(InputAction.CallbackContext context)
+    {
+        if (bAiming || bInChat)
+            return;
+
+        if (context.performed || context.canceled)
+        {
+            bInventory = !bInventory;
+            onInventory?.Invoke(bInventory);
         }
     }
 

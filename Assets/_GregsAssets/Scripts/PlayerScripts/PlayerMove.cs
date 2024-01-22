@@ -68,7 +68,7 @@ public class PlayerMove : MonoBehaviour
         cameraFoward = cameraFoward.normalized;
         Vector3 relativeDirection = Quaternion.LookRotation(cameraFoward) * movementDir;
         Quaternion targetRotation = Quaternion.LookRotation(relativeDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, (rotateSpeed * 1.5f) * Time.deltaTime);
     }
 
     private void MoveInput(Vector2 inputVector, Vector3 cameraFoward, bool bRotateThatDir)
