@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
 
     public void InteractInput(InputAction.CallbackContext context)
     {
-        if (bInventory)
+        if (bInventory || bAiming)
             return;
 
         if (context.performed)

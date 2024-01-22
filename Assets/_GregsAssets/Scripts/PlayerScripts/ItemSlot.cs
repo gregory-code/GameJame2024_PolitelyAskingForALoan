@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -21,6 +22,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     [SerializeField] Image slotImage;
     [SerializeField] Image itemImage;
+    [SerializeField] TextMeshProUGUI itemNameText;
 
     bool bHasItem;
 
@@ -34,6 +36,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] Color fullyTransparent;
 
     private bool bHover;
+    private bool selected;
 
     private void Start()
     {
@@ -68,6 +71,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         myItem = item;
         itemImage.sprite = item.GetImage();
         itemImage.color = Transparent;
+        itemNameText.text = item.GetName();
         bHasItem = true;
     }
 
@@ -78,6 +82,15 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (bHover)
             scaleLerp *= scaleAmount;
 
+        if(selected)
+        {
+            itemNameText.color = Color.Lerp(itemNameText.color, FullColor, 0.1f);
+        }
+        else
+        {
+            itemNameText.color = Color.Lerp(itemNameText.color, fullyTransparent, 0.1f);
+        }
+        
         transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, (speed - 0.1f));
         transform.localScale = Vector3.Lerp(transform.localScale, scaleLerp, speed);
     }
@@ -87,6 +100,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (item == myItem)
             return;
 
+        selected = false;
         slotImage.color = unselectedColor;
         itemImage.color = (bHasItem) ? Transparent : fullyTransparent;
     }
@@ -100,6 +114,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         itemImage.color = (bHasItem) ? FullColor : fullyTransparent;
         bHover = true;
 
+        selected = true;
         onSelect?.Invoke(myItem);
     }
 
