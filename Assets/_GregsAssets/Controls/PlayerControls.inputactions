@@ -33,6 +33,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Blastin'",
+                    "type": "Button",
+                    "id": "773092cb-97c7-4fae-a4f4-0b8800915217",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Aim",
                     "type": "Button",
                     "id": "3e659de8-a5f1-4360-adff-ad6bdadcf2db",
@@ -214,6 +223,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "404d1c5d-d33f-471c-9703-1b3f22e5713c",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Blastin'",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

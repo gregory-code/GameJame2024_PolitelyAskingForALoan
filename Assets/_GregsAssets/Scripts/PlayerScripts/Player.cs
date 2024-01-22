@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     public delegate void OnInteract();
     public event OnInteract onInteract;
 
+    public delegate void OnBlasting();
+    public event OnBlasting onBlasting;
+
     public delegate void OnAim(bool state);
     public event OnAim onAim;
 
@@ -129,6 +132,17 @@ public class Player : MonoBehaviour
         {
             bInventory = !bInventory;
             onInventory?.Invoke(bInventory);
+        }
+    }
+
+    public void BlastingInput(InputAction.CallbackContext context)
+    {
+        if (bInventory)
+            return;
+
+        if (context.performed)
+        {
+            onBlasting?.Invoke();
         }
     }
 
