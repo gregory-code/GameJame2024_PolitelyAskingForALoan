@@ -19,6 +19,6 @@ public class Crosshair : MonoBehaviour
 
     public void CrosshairRecoil()
     {
-        transform.localPosition *= 1.2f;
+        transform.localPosition *= 2.3f;
     }
 }

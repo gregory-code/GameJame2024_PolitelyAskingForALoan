@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Player;
 
 public class PlayerAim : MonoBehaviour
 {
@@ -13,6 +14,14 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] Transform regularTransform;
     [SerializeField] Transform adsTransform;
 
+    [SerializeField] GameObject BulletPrefab;
+    [SerializeField] GameObject CasingPrefab;
+
+    [SerializeField] Transform shootingSpawn;
+    [SerializeField] Transform casingSpawn;
+
+    [SerializeField] float bulletSpeed;
+
     [SerializeField] CanvasGroup crosshairGroup;
     [SerializeField] Crosshair[] crosshairs;
 
@@ -22,13 +31,28 @@ public class PlayerAim : MonoBehaviour
     private void Start()
     {
         player.onAim += SetOffset;
-        player.onBlasting += MoveCrosshairs;
+        player.onBlasting += Fire;
+
         currentTransform = regularTransform;
     }
 
-    private void MoveCrosshairs()
+    private void Fire()
     {
-        foreach(Crosshair cross in crosshairs)
+        RaycastHit hit;
+        Ray raycast = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(raycast, out hit))
+        {
+            GameObject bullet = Instantiate(BulletPrefab, shootingSpawn.position, shootingSpawn.rotation);
+
+            Vector3 directionToTarget = (hit.point - shootingSpawn.position).normalized;
+
+            bullet.GetComponent<Rigidbody>().velocity = directionToTarget * bulletSpeed;
+
+            bullet.transform.rotation = Quaternion.LookRotation(directionToTarget);
+        }
+
+        foreach (Crosshair cross in crosshairs)
         {
             cross.CrosshairRecoil();
         }
@@ -47,12 +71,7 @@ public class PlayerAim : MonoBehaviour
         float alphaLerp = (bADS) ? 1 : 0;
         crosshairGroup.alpha = Mathf.Lerp(crosshairGroup.alpha, alphaLerp, 10 * Time.deltaTime);
 
-        /*Vector3 fowardTransform = transform.TransformDirection(Vector3.forward);
-        Debug.DrawRay(transform.position, fowardTransform * 50, Color.red);
-
-        if (Physics.Raycast(transform.position, fowardTransform, out hit, 50))
-        {
-
-        }*/
+        //Vector3 fowardTransform = transform.TransformDirection(Vector3.forward);
+        //Debug.DrawRay(transform.position, fowardTransform * 50, Color.red);
     }
 }

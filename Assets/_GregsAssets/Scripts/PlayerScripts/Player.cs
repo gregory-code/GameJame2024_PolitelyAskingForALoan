@@ -81,7 +81,6 @@ public class Player : MonoBehaviour
 
         LookInput();
         MoveInput(true);
-        //MouseRayCastInput();
     }
 
     private void MoveInput(bool bRotateThatDir)
@@ -149,17 +148,6 @@ public class Player : MonoBehaviour
     private void AddItem(ItemBase itemToAdd)
     {
         playerInventory.AddItem(itemToAdd);
-    }
-
-    private void MouseRayCastInput()
-    {
-        RaycastHit hit;
-        Ray raycast = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(raycast, out hit))
-        {
-            onRotate?.Invoke(hit.point);
-        }
     }
 
     public void SetTargetNPC(Transform newTarget, bool state)
