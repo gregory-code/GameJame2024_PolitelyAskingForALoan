@@ -13,25 +13,23 @@ public class ChatEngine : MonoBehaviour
     [SerializeField] TextMeshProUGUI regularName;
     [SerializeField] TextMeshProUGUI colorName;
 
-    private bool bCanAct = true;
+    bool bInChat = false;
+    npcBase currentNPC;
 
-    private void SetStates(bool state)
+    public void StartChat(npcBase myNPC, Transform npcTransform, string npcName, string startingDialouge, Color chatterColor)
     {
-        bCanAct = state;
-        player.SetCanAct(state);
-    }
-
-    public void StartChat(string chatterName, string startingDialouge, Color chatterColor)
-    {
-        if (bCanAct == false)
+        if (bInChat)
             return;
 
-        SetStates(false);
+        bInChat = true;
+        currentNPC = myNPC;
+
+        player.SetTargetNPC(npcTransform, true);
         chatAnimator.SetTrigger("startChat");
 
         dialogueText.text = startingDialouge;
-        regularName.text = chatterName;
-        colorName.text = chatterName;
+        regularName.text = npcName;
+        colorName.text = npcName;
 
         colorName.color = chatterColor;
 
@@ -45,10 +43,10 @@ public class ChatEngine : MonoBehaviour
 
     private void EndChat()
     {
-        SetStates(true);
+        bInChat = false;
+        currentNPC.TalkState(null, false);
+        player.SetTargetNPC(null, false);
         chatAnimator.SetTrigger("endChat");
-
-        player.SetTargetNPC(null);
 
         player.onInteract -= GoNext;
     }

@@ -14,7 +14,7 @@ public class testBlock : npcBase
 
     private void StartTalking(Player interactingPlayer)
     {
-        interactingPlayer.SetTargetNPC(this.transform);
-        GameObject.FindFirstObjectByType<ChatEngine>().StartChat(GetName(), "Hi", GetColor());
+        TalkState(interactingPlayer.transform, true);
+        GameObject.FindFirstObjectByType<ChatEngine>().StartChat(this, this.transform, GetName(), "Hi", GetColor());
     }
 }
