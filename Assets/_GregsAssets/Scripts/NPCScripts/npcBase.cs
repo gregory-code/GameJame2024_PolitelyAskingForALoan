@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -68,7 +69,12 @@ public class npcBase : MonoBehaviour
     private void LateUpdate()
     {
         if (player == null)
+        {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+            if (player != null)
+                player.onBlasting += HeardThat;
+
+        }
 
         if (bDead)
             return;
@@ -82,11 +88,18 @@ public class npcBase : MonoBehaviour
         if (SeesPlayer())
         {
             bFoundPlayer = true;
+            StopAllCoroutines();
         }
         else
         {
             StartCoroutine(LostPlayer());
         }
+    }
+
+    private void HeardThat()
+    {
+        bFoundPlayer = true;
+        StopAllCoroutines();
     }
 
     private void FollowPlayer()
