@@ -7,7 +7,7 @@ public class Crosshair : MonoBehaviour
     [SerializeField] float speed;
     Vector3 origionalLocation;
 
-    private void Start()
+    private void Awake()
     {
         origionalLocation = transform.localPosition;
     }
@@ -20,5 +20,10 @@ public class Crosshair : MonoBehaviour
     public void CrosshairRecoil()
     {
         transform.localPosition *= 2.3f;
+    }
+
+    public float GetCrosshariSpeed()
+    {
+        return speed;
     }
 }

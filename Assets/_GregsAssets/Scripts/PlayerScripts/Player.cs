@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
     [SerializeField] ItemBase nothingItem;
     [SerializeField] ItemBase gunItem;
 
+    private ItemBase currentItem;
+
     [SerializeField] GameObject[] itemGameObjects;
 
     void Awake()
@@ -67,6 +69,7 @@ public class Player : MonoBehaviour
         {
             itemGameObject.SetActive(false);
         }
+        currentItem = item;
         itemGameObjects[item.GetID()].SetActive(true);
     }
 
@@ -136,7 +139,10 @@ public class Player : MonoBehaviour
 
     public void BlastingInput(InputAction.CallbackContext context)
     {
-        if (bInventory)
+        if (currentItem == null)
+            return;
+
+        if (bInventory || !bAiming || currentItem.GetID() != 1)
             return;
 
         if (context.performed)
