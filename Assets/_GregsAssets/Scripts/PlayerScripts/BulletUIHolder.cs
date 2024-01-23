@@ -19,8 +19,15 @@ public class BulletUIHolder : MonoBehaviour
     private void Start()
     {
         player.onSelectItem += SelectItem;
+        player.onAddAmmo += AddAmmo;
         player.onBlasting += UseBullet;
         player.onReload += ReloadBullets;
+    }
+
+    private void AddAmmo(int amount)
+    {
+        ammoReserves += amount;
+        ammoReservesText.text = "x" + ammoReserves + "";
     }
 
     private void SelectItem(int itemID)

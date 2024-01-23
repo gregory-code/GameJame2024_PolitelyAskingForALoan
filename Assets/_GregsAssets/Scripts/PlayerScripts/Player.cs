@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
     public delegate void OnBlasting();
     public event OnBlasting onBlasting;
 
+    public delegate void OnAddAmmo(int amount);
+    public event OnAddAmmo onAddAmmo;
+
     public delegate void OnAim(bool state);
     public event OnAim onAim;
 
@@ -170,6 +173,7 @@ public class Player : MonoBehaviour
     {
         ammoReserves += amount;
         GameObject.FindFirstObjectByType<Notification>().CreateNotification("- Picked Up -   x" + amount + " Bullets", Color.white, null);
+        onAddAmmo(amount);
     }
 
     public void ReloadInput(InputAction.CallbackContext context)
