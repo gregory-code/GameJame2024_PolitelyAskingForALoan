@@ -5,7 +5,6 @@ using UnityEngine;
 public class Pushable : MonoBehaviour
 {
     [SerializeField] float pushPower;
-
     public void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Debug.Log("Pushin");

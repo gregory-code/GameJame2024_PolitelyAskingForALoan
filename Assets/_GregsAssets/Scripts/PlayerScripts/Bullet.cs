@@ -19,8 +19,8 @@ public class Bullet : MonoBehaviour
     {
         if (other.tag == "Head")
         {
-            other.transform.root.GetComponent<RagDoll>().TargetHit(transform.forward, other.GetComponent<Rigidbody>());
-            GameObject sparkle = Instantiate(headShotSparklePrefab, raycastHitPoint.point, transform.rotation);
+            other.transform.root.GetComponent<npcBase>().GetHit(transform.forward, other.GetComponent<Rigidbody>(), true);
+            GameObject sparkle = Instantiate(headShotSparklePrefab, transform.position, transform.rotation);
             Destroy(sparkle, 3);
 
             Destroy(this.gameObject);
@@ -28,7 +28,8 @@ public class Bullet : MonoBehaviour
 
         if (other.tag == "Body")
         {
-            GameObject body = Instantiate(bodyShotSparklePrefab, raycastHitPoint.point, transform.rotation);
+            other.transform.root.GetComponent<npcBase>().GetHit(transform.forward, other.GetComponent<Rigidbody>(), false);
+            GameObject body = Instantiate(bodyShotSparklePrefab, transform.position, transform.rotation);
             Destroy(body, 3);
 
             Destroy(this.gameObject);
@@ -36,7 +37,7 @@ public class Bullet : MonoBehaviour
 
         if (other.tag == "Environment")
         {
-            GameObject bulletHole = Instantiate(bulletHolePrefab, raycastHitPoint.point, transform.rotation);
+            GameObject bulletHole = Instantiate(bulletHolePrefab, transform.position, transform.rotation);
             Destroy(bulletHole, 12);
 
             Destroy(this.gameObject);

@@ -7,8 +7,11 @@ public class RagDoll : MonoBehaviour
     private Rigidbody[] _rigidBodies;
     [SerializeField] float ragdollForce;
 
+    [SerializeField] npcBase npcbase;
+
     private void Start()
     {
+        npcbase.onDeath += TargetHit;
         DisableRagdoll();
     }
 
