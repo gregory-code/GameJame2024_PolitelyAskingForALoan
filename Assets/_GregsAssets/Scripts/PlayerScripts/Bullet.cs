@@ -15,6 +15,11 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "Target")
+        {
+            other.transform.root.GetComponent<RagDoll>().TargetHit(transform.forward, other.GetComponent<Rigidbody>());
+        }
+
         if (other.tag == "Environment")
         {
             GameObject bulletHole = Instantiate(bulletHolePrefab, raycastHitPoint.point, transform.rotation);
