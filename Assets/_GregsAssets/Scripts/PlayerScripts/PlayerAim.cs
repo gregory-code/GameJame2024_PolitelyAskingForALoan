@@ -69,7 +69,7 @@ public class PlayerAim : MonoBehaviour
         foreach (Crosshair cross in crosshairs)
         {
             cross.CrosshairRecoil();
-            accuracy += 0.8f;
+            accuracy += 0.2f;
         }
     }
 

@@ -5,6 +5,8 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] GameObject bulletHolePrefab;
+    [SerializeField] GameObject headShotSparklePrefab;
+    [SerializeField] GameObject bodyShotSparklePrefab;
 
     private RaycastHit raycastHitPoint;
 
@@ -15,9 +17,21 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Target")
+        if (other.tag == "Head")
         {
             other.transform.root.GetComponent<RagDoll>().TargetHit(transform.forward, other.GetComponent<Rigidbody>());
+            GameObject sparkle = Instantiate(headShotSparklePrefab, raycastHitPoint.point, transform.rotation);
+            Destroy(sparkle, 3);
+
+            Destroy(this.gameObject);
+        }
+
+        if (other.tag == "Body")
+        {
+            GameObject body = Instantiate(bodyShotSparklePrefab, raycastHitPoint.point, transform.rotation);
+            Destroy(body, 3);
+
+            Destroy(this.gameObject);
         }
 
         if (other.tag == "Environment")
