@@ -30,6 +30,7 @@ public class copCat : npcBase
     public void Start()
     {
         onHeardThat += CopCatAlert;
+        onSeesGun += CopCatAlert;
         agent.stoppingDistance = 1;
     }
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.45290786, g: 0.29007116, b: 0.18086602, a: 1}
+  m_IndirectSpecularColor: {r: 0.45291978, g: 0.2900764, b: 0.18086745, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -40325,6 +40325,8 @@ MonoBehaviour:
   bFoundPlayer: 0
   bDead: 0
   bPlayerIsDead: 0
+  playerHasGun: 0
+  seenGun: 0
   rangeToShoot: 9
   tooClose: 6
   shootingSpeed: 6
@@ -41952,6 +41954,8 @@ MonoBehaviour:
   bFoundPlayer: 0
   bDead: 0
   bPlayerIsDead: 0
+  playerHasGun: 0
+  seenGun: 0
   myInteraction: {fileID: 7764062501848014971}
   firstTalk: {fileID: 11400000, guid: 866b3bbb48094a34883dccac55a9c943, type: 2}
 --- !u!114 &7764062501848014971

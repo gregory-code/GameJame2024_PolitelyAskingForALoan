@@ -25,6 +25,9 @@ public class Player : MonoBehaviour
     public delegate void OnBlasting();
     public event OnBlasting onBlasting;
 
+    public delegate void OnHESGOTAGUN(bool bHasIt);
+    public event OnHESGOTAGUN onHESGOTAGUN;
+
     public delegate void OnTakeDamage(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill);
     public event OnTakeDamage onTakeDamage;
 
@@ -99,6 +102,14 @@ public class Player : MonoBehaviour
         foreach(GameObject itemGameObject in itemGameObjects)
         {
             itemGameObject.SetActive(false);
+        }
+        if(item.GetID() == 1)
+        {
+            onHESGOTAGUN?.Invoke(true);
+        }
+        else
+        {
+            onHESGOTAGUN?.Invoke(false);
         }
         currentItem = item;
         onSelectItem?.Invoke(item.GetID());

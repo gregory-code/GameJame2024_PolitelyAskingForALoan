@@ -33,6 +33,9 @@ public class npcBase : MonoBehaviour
     public delegate void OnHeardThat();
     public event OnHeardThat onHeardThat;
 
+    public delegate void OnSeesGun();
+    public event OnSeesGun onSeesGun;
+
     public delegate void OnDeath(Vector3 shotDirection, Rigidbody shotRigidbody);
     public event OnDeath onDeath;
 
@@ -57,11 +60,19 @@ public class npcBase : MonoBehaviour
             {
                 player.onTakeDamage += PlayerHit;
                 player.onBlasting += HeardThat;
+                player.onHESGOTAGUN += SeesGun;
             }
 
         }
 
         Talking();
+    }
+
+    public bool playerHasGun;
+
+    private void SeesGun(bool hasIt)
+    {
+        playerHasGun = hasIt;
     }
 
     private void PlayerHit(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)
@@ -145,8 +156,15 @@ public class npcBase : MonoBehaviour
             }
         }
 
+        if (playerHasGun && seenGun == false)
+        {
+            seenGun = true;
+            onSeesGun?.Invoke();
+        }
         return true;
     }
+
+    public bool seenGun;
 
     private void OnDrawGizmos()
     {
