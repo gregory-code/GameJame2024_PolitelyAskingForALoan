@@ -68,7 +68,7 @@ public class ChatInteraction : MonoBehaviour
     {
         if (player == null)
         {
-            player = other.GetComponent<Player>();
+            player = other.transform.root.transform.Find("player").GetComponent<Player>();
         }
     }
 

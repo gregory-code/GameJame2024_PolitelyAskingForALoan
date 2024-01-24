@@ -20,9 +20,13 @@ public class npcBase : MonoBehaviour
     [SerializeField] float halfPeripheralAngle = 80f;
     [SerializeField] float attentionSpanInSeconds = 5;
 
+    [Header("Speed")]
+    public float rotateSpeed = 7;
+
     private bool bTalking;
     public bool bFoundPlayer;
     public bool bDead;
+    public bool bPlayerIsDead;
     private Transform playerLocation;
 
     public delegate void OnDeath(Vector3 shotDirection, Rigidbody shotRigidbody);
@@ -43,13 +47,24 @@ public class npcBase : MonoBehaviour
     {
         if (player == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+            player = GameObject.FindObjectOfType<Player>();
             if (player != null)
+            {
+                player.onTakeDamage += PlayerHit;
                 player.onBlasting += HeardThat;
+            }
 
         }
 
         Talking();
+    }
+
+    private void PlayerHit(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)
+    {
+        if(wouldKill)
+        {
+            bPlayerIsDead = true;
+        }
     }
 
     private void HeardThat()
