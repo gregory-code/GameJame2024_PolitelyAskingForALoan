@@ -501,6 +501,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Racoon
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ec67ae2e55596804b8f638f75311d161, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b3952df0528fda34aa8ed3ef7f56ceaa, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -707,7 +711,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 80caf79860a11964bbd298bd222b241d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.52
+      value: -2.69
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 80caf79860a11964bbd298bd222b241d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -749,6 +753,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CatCop
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 80caf79860a11964bbd298bd222b241d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: cb719dbdbc14b2149894245cd84c438f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2491,6 +2499,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 0978b80e5adb2f34ba320b234d92d1a5, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 4cf89c92726f4454ba5bffdc24fff2ec, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3671,7 +3683,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 59628fa88fcca254d9f0619ecd90c12e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.30260825
+      value: 0.849
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59628fa88fcca254d9f0619ecd90c12e, type: 3}
       propertyPath: m_LocalPosition.y
