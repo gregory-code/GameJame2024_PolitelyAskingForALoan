@@ -25,10 +25,24 @@ public class copCat : npcBase
     [SerializeField] float casingRightSpeed;
     [SerializeField] float casingSpinSpeed;
 
+    [SerializeField] ChatInteraction myInteraction;
+    [SerializeField] TalkBox firstTalk;
+
+    private void StartTalking(Player interactingPlayer)
+    {
+        TalkState(interactingPlayer.transform, true);
+        GameObject.FindFirstObjectByType<ChatEngine>().StartChat(this, this.transform, GetName(), firstTalk, GetColor());
+    }
+
+    float animSpeed;
+    float desiredSpeed;
+
     bool bHighAlert;
 
     public void Start()
     {
+        myInteraction.onInteract += StartTalking;
+        desiredSpeed = 0;
         onHeardThat += CopCatAlert;
         onSeesGun += CopCatAlert;
         agent.stoppingDistance = 1;
@@ -44,6 +58,10 @@ public class copCat : npcBase
     {
         if (bDead || bPlayerIsDead)
             return;
+
+        desiredSpeed = agent.velocity.magnitude;
+        animSpeed = Mathf.Lerp(animSpeed, desiredSpeed, 5 * Time.deltaTime);
+        npcAnimator.SetFloat("speed", animSpeed);
 
         if (bFoundPlayer && Talking() == false)
         {
@@ -74,7 +92,6 @@ public class copCat : npcBase
 
         if (Talking())
         {
-            bFoundPlayer = true;
             return;
         }
 
