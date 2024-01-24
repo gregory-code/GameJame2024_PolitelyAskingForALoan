@@ -50,6 +50,8 @@ public class Player : MonoBehaviour
     private bool bInvincible = false;
     private Transform targetNPC = null;
     [SerializeField] Transform followTransform;
+
+    [SerializeField] Animator racoonAnimator;
     
     [SerializeField] Transform headTransform;
     public Transform GetPlayerHead()
@@ -187,6 +189,7 @@ public class Player : MonoBehaviour
         if (context.performed || context.canceled)
         {
             bAiming = !bAiming;
+            racoonAnimator.SetBool("aiming", bAiming);
             onAim?.Invoke(bAiming);
         }
     }
@@ -219,6 +222,8 @@ public class Player : MonoBehaviour
 
         if (context.performed && currentAmmo > 0)
         {
+            racoonAnimator.SetTrigger("shoot");
+
             currentAmmo -= 1;
 
             onBlasting?.Invoke();
