@@ -15,19 +15,23 @@ public class ChatEngine : MonoBehaviour
 
     bool bInChat = false;
     npcBase currentNPC;
+    TalkBox currentTalkBox;
+    int currentTalk;
 
-    public void StartChat(npcBase myNPC, Transform npcTransform, string npcName, string startingDialouge, Color chatterColor)
+    public void StartChat(npcBase myNPC, Transform npcTransform, string npcName, TalkBox talk, Color chatterColor)
     {
         if (bInChat)
             return;
 
         bInChat = true;
         currentNPC = myNPC;
+        currentTalkBox = talk;
 
         player.SetTargetNPC(npcTransform, true);
         chatAnimator.SetTrigger("startChat");
 
-        dialogueText.text = startingDialouge;
+        StartCoroutine(TypeText(talk.dialogues[0]));
+        currentTalk = 0;
         regularName.text = npcName;
         colorName.text = npcName;
 
@@ -38,7 +42,26 @@ public class ChatEngine : MonoBehaviour
 
     private void GoNext()
     {
-        EndChat();
+        if(currentTalk < currentTalkBox.dialogues.Length - 1)
+        {
+            StopAllCoroutines();
+            currentTalk++;
+            StartCoroutine(TypeText(currentTalkBox.dialogues[currentTalk]));
+        }
+        else
+        {
+            EndChat();
+        }
+    }
+
+    private IEnumerator TypeText(string dialogue)
+    {
+        dialogueText.text = "";
+        foreach (char c in dialogue)
+        {
+            dialogueText.text += c;
+            yield return new WaitForSeconds(0.02f);
+        }
     }
 
     private void EndChat()
