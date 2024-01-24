@@ -14,7 +14,7 @@ public class ammoPickup : MonoBehaviour
         if(other.tag == "Player" && alreadyPicked == false)
         {
             alreadyPicked = true;
-            other.transform.GetComponent<Player>().PickUpAmmo(pickUpAmount);
+            other.transform.root.transform.Find("player").GetComponent<Player>().PickUpAmmo(pickUpAmount);
             myAnimator.SetTrigger("pickup");
             Destroy(this.gameObject, 0.25f);
         }

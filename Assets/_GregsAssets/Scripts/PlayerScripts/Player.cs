@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.HighDefinition;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] PlayerCamera playerCamera;
     [SerializeField] PlayerInventory playerInventory;
+    [SerializeField] CharacterController characterController;
     
     PlayerControls playerControls;
 
@@ -23,6 +24,9 @@ public class Player : MonoBehaviour
 
     public delegate void OnBlasting();
     public event OnBlasting onBlasting;
+
+    public delegate void OnTakeDamage(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill);
+    public event OnTakeDamage onTakeDamage;
 
     public delegate void OnAddAmmo(int amount);
     public event OnAddAmmo onAddAmmo;
@@ -42,10 +46,20 @@ public class Player : MonoBehaviour
     private bool bInChat = false;
     private bool bAiming = false;
     private bool bInventory = false;
+    private bool bDead;
+    private bool bInvincible = false;
     private Transform targetNPC = null;
+    [SerializeField] Transform followTransform;
+    
+    [SerializeField] Transform headTransform;
+    public Transform GetPlayerHead()
+    {
+        return headTransform;
+    }
 
     private int currentAmmo;
     int ammoReserves = 5;
+    int health = 3;
     [SerializeField] int maxAmmo;
 
     [SerializeField] ItemBase nothingItem;
@@ -91,6 +105,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (bDead)
+            return;
 
         if (bInChat)
         {
@@ -112,6 +128,34 @@ public class Player : MonoBehaviour
         onMoveInput?.Invoke(inputVector, playerCamera.GetCameraFoward(), bRotateThatDir);
     }
 
+    public void TakeDamage(Vector3 shotDirection, Rigidbody shotRigidbody)
+    {
+        if (bInvincible)
+            return;
+
+        health--;
+
+        StartCoroutine(IFrames());
+
+        bool kills = false;
+        if (health < 0)
+        {
+            followTransform.SetParent(headTransform);
+            bDead = true;
+            characterController.enabled = false;
+            kills = true;
+        }
+
+        onTakeDamage?.Invoke(shotDirection, shotRigidbody, kills);
+    }
+
+    private IEnumerator IFrames()
+    {
+        bInvincible = true;
+        yield return new WaitForSeconds(0.2f);
+        bInvincible = false;
+    }
+
     private void LookInput()
     {
         Vector2 lookVector = playerControls.Player.Look.ReadValue<Vector2>();
@@ -120,6 +164,9 @@ public class Player : MonoBehaviour
 
     public void InteractInput(InputAction.CallbackContext context)
     {
+        if (bDead)
+            return;
+
         if (bInventory || bAiming)
             return;
 
@@ -131,6 +178,9 @@ public class Player : MonoBehaviour
 
     public void AimInput(InputAction.CallbackContext context)
     {
+        if (bDead)
+            return;
+
         if (bInventory)
             return;
 
@@ -143,6 +193,9 @@ public class Player : MonoBehaviour
 
     public void InventoryInput(InputAction.CallbackContext context)
     {
+        if (bDead)
+            return;
+
         if (bAiming || bInChat)
             return;
 
@@ -155,6 +208,9 @@ public class Player : MonoBehaviour
 
     public void BlastingInput(InputAction.CallbackContext context)
     {
+        if (bDead)
+            return;
+
         if (currentItem == null)
             return;
 
@@ -171,6 +227,9 @@ public class Player : MonoBehaviour
 
     public void PickUpAmmo(int amount)
     {
+        if (bDead)
+            return;
+
         ammoReserves += amount;
         GameObject.FindFirstObjectByType<Notification>().CreateNotification("- Picked Up -   x" + amount + " Bullets", Color.white, null);
         onAddAmmo(amount);
@@ -178,6 +237,9 @@ public class Player : MonoBehaviour
 
     public void ReloadInput(InputAction.CallbackContext context)
     {
+        if (bDead)
+            return;
+
         if (bInventory || bInChat)
             return;
 

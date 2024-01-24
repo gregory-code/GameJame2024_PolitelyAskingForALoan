@@ -40,16 +40,35 @@ public class PlayerCamera : MonoBehaviour
 
     bool bAiming = false;
 
+    bool bDead = false;
+
     public void Start()
     {
         clampMin = clampMinRegular;
         clampMax = clampMaxRegular;
+        player.onTakeDamage += TookDamage;
         player.onAim += AimInput;
         currentArmLength = closeArmLength;
     }
 
+    private void TookDamage(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)
+    {
+        if(wouldKill)
+        {
+            bDead = true;
+        }
+    }
+
     public void Update()
     {
+        if(bDead)
+        {
+            Vector3 lookDirection = player.transform.position - transform.position;
+
+            Quaternion rotate = Quaternion.LookRotation(lookDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotate, 3 * Time.deltaTime);
+        }
+
         CameraFollow();
         LerpCameraLength();
     }

@@ -13,15 +13,25 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float currentSpeed = 3f;
     [SerializeField] float rotateSpeed = 5f;
 
+    private bool bDead;
 
     private bool bAiming = false;
     Vector3 playerVelocity;
 
     private void Start()
     {
+        myPlayer.onTakeDamage += TookDamage;
         myPlayer.onAim += Aiming;
         myPlayer.onMoveInput += MoveInput;
         myPlayer.onRotate += RotateToTarget;
+    }
+
+    private void TookDamage(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)
+    {
+        if(wouldKill)
+        {
+            bDead = true;
+        }
     }
 
     private void Aiming(bool state)
@@ -31,6 +41,9 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
+        if (bDead)
+            return;
+
         MoveGravity();
         AimRotate();
     }

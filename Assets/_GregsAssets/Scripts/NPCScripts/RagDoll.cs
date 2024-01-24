@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class RagDoll : MonoBehaviour
 {
@@ -8,11 +10,33 @@ public class RagDoll : MonoBehaviour
     [SerializeField] float ragdollForce;
 
     [SerializeField] npcBase npcbase;
+    [SerializeField] Player player;
+
+    [SerializeField] bool bIsNPC;
 
     private void Start()
     {
-        npcbase.onDeath += TargetHit;
+        if (!bIsNPC)
+        {
+            npcbase.onDeath += TargetHit;
+
+        }
+        else
+        {
+            player.onTakeDamage += Damaged;
+
+        }
+
         DisableRagdoll();
+    }
+
+    private void Damaged(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)
+    {
+        if(wouldKill)
+        {
+            EnableRagdoll();
+            shotRigidbody.AddForce(shotDirection.normalized * ragdollForce, ForceMode.Impulse);
+        }
     }
 
     public void TargetHit(Vector3 shotDirection, Rigidbody shotRigidbody)
