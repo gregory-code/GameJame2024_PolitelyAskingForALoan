@@ -76,6 +76,7 @@ public class PlayerAim : MonoBehaviour
     private void MuzzleFlash()
     {
         GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, shootingSpawn);
+        muzzleFlash.transform.SetParent(null);
         Destroy(muzzleFlash, 1);
     }
 
