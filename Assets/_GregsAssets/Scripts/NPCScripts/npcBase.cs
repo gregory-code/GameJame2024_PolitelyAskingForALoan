@@ -7,22 +7,22 @@ using static UnityEngine.GraphicsBuffer;
 
 public class npcBase : MonoBehaviour
 {
-    Player player;
+    public Player player;
 
     [Header("Genearl Info")]
     [SerializeField] string npcName;
     [SerializeField] Color npcColor;
-    [SerializeField] NavMeshAgent agent;
+    public NavMeshAgent agent;
 
     [Header("Senses")]
     [SerializeField] float sightRange = 20f;
     [SerializeField] float eyeHeight = 0.65f;
-    [SerializeField] float halfPeripheralAngle = 75f;
-    [SerializeField] float attentionSpanInSeconds;
+    [SerializeField] float halfPeripheralAngle = 80f;
+    [SerializeField] float attentionSpanInSeconds = 5;
 
     private bool bTalking;
-    private bool bFoundPlayer;
-    private bool bDead;
+    public bool bFoundPlayer;
+    public bool bDead;
     private Transform playerLocation;
 
     public delegate void OnDeath(Vector3 shotDirection, Rigidbody shotRigidbody);
@@ -39,9 +39,38 @@ public class npcBase : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+            if (player != null)
+                player.onBlasting += HeardThat;
+
+        }
+
+        Talking();
+    }
+
+    private void HeardThat()
+    {
+        bFoundPlayer = true;
+        StopAllCoroutines();
+    }
+
+    public Player GetPlayer()
+    {
+        return player;
+    }
+
     public string GetName()
     {
         return npcName;
+    }
+
+    public float GetAttentionSpan()
+    {
+        return attentionSpanInSeconds;
     }
 
     public Color GetColor()
@@ -55,70 +84,12 @@ public class npcBase : MonoBehaviour
         this.playerLocation = playerLocation;
     }
 
-    private void Update()
-    {
-        if (bDead)
-            return;
-
-        if (bFoundPlayer && Talking() == false)
-        {
-            FollowPlayer();
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-            if (player != null)
-                player.onBlasting += HeardThat;
-
-        }
-
-        if (bDead)
-            return;
-
-        if (Talking())
-        {
-            bFoundPlayer = true;
-            return;
-        }
-
-        if (SeesPlayer())
-        {
-            bFoundPlayer = true;
-            StopAllCoroutines();
-        }
-        else
-        {
-            StartCoroutine(LostPlayer());
-        }
-    }
-
-    private void HeardThat()
-    {
-        bFoundPlayer = true;
-        StopAllCoroutines();
-    }
-
-    private void FollowPlayer()
-    {
-        agent.SetDestination(player.transform.position);
-        agent.isStopped = false;
-    }
-
-    private IEnumerator LostPlayer()
-    {
-        yield return new WaitForSeconds(attentionSpanInSeconds);
-        bFoundPlayer = false;
-        agent.isStopped = true;
-    }
-
-    private bool Talking()
+    public bool Talking()
     {
         if (bTalking)
         {
+            agent.isStopped = true;
+
             Vector3 lookDirection = playerLocation.position - transform.position;
             lookDirection.y = 0;
 
