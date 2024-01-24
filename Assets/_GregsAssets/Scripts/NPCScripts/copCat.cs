@@ -25,9 +25,18 @@ public class copCat : npcBase
     [SerializeField] float casingRightSpeed;
     [SerializeField] float casingSpinSpeed;
 
+    bool bHighAlert;
+
     public void Start()
     {
+        onHeardThat += CopCatAlert;
         agent.stoppingDistance = 1;
+    }
+
+    private void CopCatAlert()
+    {
+        StopAllCoroutines();
+        CheckHighAlert();
     }
 
     private void Update()
@@ -38,6 +47,15 @@ public class copCat : npcBase
         if (bFoundPlayer && Talking() == false)
         {
             FollowPlayer();
+        }
+    }
+
+    private void CheckHighAlert()
+    {
+        if(bHighAlert == false)
+        {
+            bHighAlert = true;
+            npcAnimator.SetBool("highAlert", true);
         }
     }
 
@@ -59,12 +77,12 @@ public class copCat : npcBase
             return;
         }
 
-        if (SeesPlayer())
+        if (SeesPlayer() && bHighAlert)
         {
             bFoundPlayer = true;
             StopAllCoroutines();
         }
-        else
+        else if(bHighAlert)
         {
             StartCoroutine(LostPlayer());
         }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b20b0d8915055384e9ac0669cb41ef02
+guid: e3d07417dd807f941839dab500014a04
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -24,7 +24,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: IdleAdditive
-      takeName: IdleAdditive
-      internalID: -5004657031543270665
+      name: Talking
+      takeName: Talking
+      internalID: -8703035399731986702
       firstFrame: 0
-      lastFrame: 155
+      lastFrame: 132
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -124,7 +124,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 80caf79860a11964bbd298bd222b241d, type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 33dc3e790756e004686f175ac58e98f8, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1

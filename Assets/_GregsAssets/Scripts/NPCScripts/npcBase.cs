@@ -13,6 +13,7 @@ public class npcBase : MonoBehaviour
     [SerializeField] string npcName;
     [SerializeField] Color npcColor;
     public NavMeshAgent agent;
+    public Animator npcAnimator;
 
     [Header("Senses")]
     [SerializeField] float sightRange = 20f;
@@ -29,6 +30,9 @@ public class npcBase : MonoBehaviour
     public bool bPlayerIsDead;
     private Transform playerLocation;
 
+    public delegate void OnHeardThat();
+    public event OnHeardThat onHeardThat;
+
     public delegate void OnDeath(Vector3 shotDirection, Rigidbody shotRigidbody);
     public event OnDeath onDeath;
 
@@ -37,6 +41,7 @@ public class npcBase : MonoBehaviour
         if(headShot)
         {
             bDead = true;
+            npcAnimator.enabled = false;
             agent.isStopped = true;
             GetComponent<ChatInteraction>().Disable();
             onDeath?.Invoke(shotDirection, shotRigidbody);
@@ -70,7 +75,7 @@ public class npcBase : MonoBehaviour
     private void HeardThat()
     {
         bFoundPlayer = true;
-        StopAllCoroutines();
+        onHeardThat?.Invoke();
     }
 
     public Player GetPlayer()
@@ -97,6 +102,7 @@ public class npcBase : MonoBehaviour
     {
         bTalking = state;
         this.playerLocation = playerLocation;
+        npcAnimator.SetBool("talking", state);
     }
 
     public bool Talking()
