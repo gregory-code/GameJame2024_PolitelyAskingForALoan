@@ -1,18 +1,76 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 public class npcBase : MonoBehaviour
 {
+    public Player player;
+
+    [Header("Genearl Info")]
     [SerializeField] string npcName;
     [SerializeField] Color npcColor;
+    public NavMeshAgent agent;
+
+    [Header("Senses")]
+    [SerializeField] float sightRange = 20f;
+    [SerializeField] float eyeHeight = 0.65f;
+    [SerializeField] float halfPeripheralAngle = 80f;
+    [SerializeField] float attentionSpanInSeconds = 5;
 
     private bool bTalking;
+    public bool bFoundPlayer;
+    public bool bDead;
     private Transform playerLocation;
+
+    public delegate void OnDeath(Vector3 shotDirection, Rigidbody shotRigidbody);
+    public event OnDeath onDeath;
+
+    public void GetHit(Vector3 shotDirection, Rigidbody shotRigidbody, bool headShot)
+    {
+        if(headShot)
+        {
+            bDead = true;
+            agent.isStopped = true;
+            GetComponent<ChatInteraction>().Disable();
+            onDeath?.Invoke(shotDirection, shotRigidbody);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+            if (player != null)
+                player.onBlasting += HeardThat;
+
+        }
+
+        Talking();
+    }
+
+    private void HeardThat()
+    {
+        bFoundPlayer = true;
+        StopAllCoroutines();
+    }
+
+    public Player GetPlayer()
+    {
+        return player;
+    }
 
     public string GetName()
     {
         return npcName;
+    }
+
+    public float GetAttentionSpan()
+    {
+        return attentionSpanInSeconds;
     }
 
     public Color GetColor()
@@ -26,15 +84,58 @@ public class npcBase : MonoBehaviour
         this.playerLocation = playerLocation;
     }
 
-    private void LateUpdate()
+    public bool Talking()
     {
-        if(bTalking)
+        if (bTalking)
         {
+            agent.isStopped = true;
+
             Vector3 lookDirection = playerLocation.position - transform.position;
             lookDirection.y = 0;
 
             Quaternion rotate = Quaternion.LookRotation(lookDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotate, 3 * Time.deltaTime);
+            return true;
         }
+
+        return false;
+    }
+
+    public bool SeesPlayer()
+    {
+        if (Vector3.Distance(player.transform.position, transform.position) > sightRange)
+        {
+            return false;
+        }
+
+        Vector3 stimuliDir = (player.transform.position - transform.position).normalized;
+        Vector3 ownerForward = transform.forward;
+
+        if (Vector3.Angle(stimuliDir, ownerForward) > halfPeripheralAngle)
+        {
+            return false;
+        }
+
+        if (Physics.Raycast(transform.position + Vector3.up * eyeHeight, stimuliDir, out RaycastHit hitInfo, sightRange))
+        {
+            if (hitInfo.collider.gameObject != player.gameObject)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Vector3 drawCenter = transform.position + Vector3.up * eyeHeight;
+        Gizmos.DrawWireSphere(drawCenter, sightRange);
+
+        Vector3 leftDir = Quaternion.AngleAxis(halfPeripheralAngle, Vector3.up) * transform.forward;
+        Vector3 rightDir = Quaternion.AngleAxis(-halfPeripheralAngle, Vector3.up) * transform.forward;
+
+        Gizmos.DrawLine(drawCenter, drawCenter + leftDir * sightRange);
+        Gizmos.DrawLine(drawCenter, drawCenter + rightDir * sightRange);
     }
 }

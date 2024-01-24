@@ -5,16 +5,20 @@ using UnityEngine;
 public class RagDoll : MonoBehaviour
 {
     private Rigidbody[] _rigidBodies;
+    [SerializeField] float ragdollForce;
+
+    [SerializeField] npcBase npcbase;
 
     private void Start()
     {
+        npcbase.onDeath += TargetHit;
         DisableRagdoll();
     }
 
     public void TargetHit(Vector3 shotDirection, Rigidbody shotRigidbody)
     {
         EnableRagdoll();
-        shotRigidbody.AddForce(shotDirection.normalized * 40f, ForceMode.Impulse);
+        shotRigidbody.AddForce(shotDirection.normalized * ragdollForce, ForceMode.Impulse);
     }
 
     private Rigidbody[] rigidbodies

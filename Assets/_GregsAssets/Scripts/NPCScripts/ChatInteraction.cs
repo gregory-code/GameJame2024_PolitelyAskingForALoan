@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class ChatInteraction : MonoBehaviour
     public delegate void OnInteract(Player interactingPlayer);
     public event OnInteract onInteract;
 
+    private bool bDisabled;
+
     private Player player;
 
     private void Start()
@@ -22,6 +25,12 @@ public class ChatInteraction : MonoBehaviour
     private void Update()
     {
         popupText.transform.position = Camera.main.WorldToScreenPoint(attachPoint.position);
+    }
+
+    public void Disable()
+    {
+        popupText.SetActive(false);
+        bDisabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -36,6 +45,9 @@ public class ChatInteraction : MonoBehaviour
 
     private void ChangeInteractState(Collider other, bool shouldEnable)
     {
+        if (bDisabled)
+            return;
+
         if (other.tag == "Player")
         {
             popupText.SetActive(shouldEnable);
@@ -62,6 +74,9 @@ public class ChatInteraction : MonoBehaviour
 
     private void Interact()
     {
+        if (bDisabled)
+            return;
+
         onInteract?.Invoke(player);
     }
 }

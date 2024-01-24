@@ -24,8 +24,17 @@ public class Player : MonoBehaviour
     public delegate void OnBlasting();
     public event OnBlasting onBlasting;
 
+    public delegate void OnAddAmmo(int amount);
+    public event OnAddAmmo onAddAmmo;
+
     public delegate void OnAim(bool state);
     public event OnAim onAim;
+
+    public delegate void OnSelectItem(int itemID);
+    public event OnSelectItem onSelectItem;
+
+    public delegate void OnReload(int countReloading);
+    public event OnReload onReload;
 
     public delegate void OnInventory(bool state);
     public event OnInventory onInventory;
@@ -34,6 +43,10 @@ public class Player : MonoBehaviour
     private bool bAiming = false;
     private bool bInventory = false;
     private Transform targetNPC = null;
+
+    private int currentAmmo;
+    int ammoReserves = 5;
+    [SerializeField] int maxAmmo;
 
     [SerializeField] ItemBase nothingItem;
     [SerializeField] ItemBase gunItem;
@@ -46,6 +59,8 @@ public class Player : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        currentAmmo = maxAmmo;
 
         playerInventory.AddItem(nothingItem);
         playerInventory.AddItem(gunItem);
@@ -70,6 +85,7 @@ public class Player : MonoBehaviour
             itemGameObject.SetActive(false);
         }
         currentItem = item;
+        onSelectItem?.Invoke(item.GetID());
         itemGameObjects[item.GetID()].SetActive(true);
     }
 
@@ -145,9 +161,39 @@ public class Player : MonoBehaviour
         if (bInventory || !bAiming || currentItem.GetID() != 1)
             return;
 
-        if (context.performed)
+        if (context.performed && currentAmmo > 0)
         {
+            currentAmmo -= 1;
+
             onBlasting?.Invoke();
+        }
+    }
+
+    public void PickUpAmmo(int amount)
+    {
+        ammoReserves += amount;
+        GameObject.FindFirstObjectByType<Notification>().CreateNotification("- Picked Up -   x" + amount + " Bullets", Color.white, null);
+        onAddAmmo(amount);
+    }
+
+    public void ReloadInput(InputAction.CallbackContext context)
+    {
+        if (bInventory || bInChat)
+            return;
+
+        if (context.performed && ammoReserves > 0 && currentAmmo < maxAmmo)
+        {
+            int amountReloading = maxAmmo - currentAmmo;
+            ammoReserves -= amountReloading;
+
+            while(ammoReserves < 0)
+            {
+                amountReloading--;
+                ammoReserves++;
+            }
+
+            currentAmmo += amountReloading;
+            onReload?.Invoke(amountReloading);
         }
     }
 

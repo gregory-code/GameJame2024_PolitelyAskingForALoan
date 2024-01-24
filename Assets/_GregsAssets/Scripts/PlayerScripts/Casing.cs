@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Casing : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] BoxCollider box;
+
+    private void Start()
     {
-        
+        StartCoroutine(EnableColliders());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator EnableColliders()
     {
-        
+        yield return new WaitForSeconds(0.2f);
+        box.isTrigger = false;
     }
 }
