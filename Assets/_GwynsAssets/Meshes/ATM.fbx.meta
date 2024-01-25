@@ -3,7 +3,12 @@ guid: 22d91dc8de8722b489d02f18fee4541a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ATM_Mtl
+    second: {fileID: 2100000, guid: b8b47a523b7b0be47af815b703fc2f54, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
