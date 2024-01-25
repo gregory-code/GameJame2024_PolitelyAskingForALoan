@@ -10,23 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be6febde3c532e849bf491d4ace475a9, type: 3}
-  m_Name: Telle_Gun
+  m_Name: Telle_Gun2
   m_EditorClassIdentifier: 
   dialogues:
-  - I can tell you have a gun
-  - But I can't move yet so please don't shoot!
-  hasOption: 1
-  options: 3
+  - Thank you! How nice of you..
+  hasOption: 0
+  options: 0
   optionSprites:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   optionText:
-  - Yes I will
-  - Nah I'm not that mean
   - 
-  optionItemID: 000000000000000002000000
+  - 
+  - 
+  optionItemID: 000000000000000000000000
   optionTalk:
-  - {fileID: 11400000, guid: 7785c1aabeba1b242b76595fa05d6267, type: 2}
-  - {fileID: 11400000, guid: 6020f26abf9f0ba44a3d74f60adcaf3a, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}

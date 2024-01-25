@@ -13,6 +13,19 @@ public class ChatEngine : MonoBehaviour
     [SerializeField] TextMeshProUGUI regularName;
     [SerializeField] TextMeshProUGUI colorName;
 
+    [SerializeField] Image[] options;
+    [SerializeField] Image[] optionImages;
+    [SerializeField] TextMeshProUGUI[] optionTexts;
+
+    [SerializeField] Color fullyVisible;
+    [SerializeField] Color transparent;
+
+    [SerializeField] Sprite redOption;
+    [SerializeField] Sprite blueOption;
+
+    public delegate void OnSpecialOption(string option);
+    public event OnSpecialOption onSpecialOption;
+
     bool bInChat = false;
     npcBase currentNPC;
     TalkBox currentTalkBox;
@@ -50,8 +63,49 @@ public class ChatEngine : MonoBehaviour
         }
         else
         {
-            EndChat();
+            if (currentTalkBox.hasOption)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                for (int i = 0; i < currentTalkBox.GetOptions(); i++)
+                {
+                    if (currentTalkBox.optionItemID[i] == player.GetCurrentItemID() || currentTalkBox.optionItemID[i] == 0)
+                    {
+                        optionTexts[i].text = currentTalkBox.optionText[i];
+                        options[i].sprite = blueOption;
+                    }
+                    else
+                    {
+                        optionTexts[i].text = "Holding wrong item!" ;
+                        options[i].sprite = redOption;
+
+                    }
+
+                    optionImages[i].sprite = currentTalkBox.optionSprites[i];
+                    optionImages[i].color = (currentTalkBox.optionSprites[i] == null) ? transparent : fullyVisible ;
+                }
+                chatAnimator.SetTrigger("show" + currentTalkBox.GetOptions());
+            }
+            else
+            {
+
+                EndChat();
+            }
         }
+    }
+
+    public void SelectOption(int which)
+    {
+        chatAnimator.SetTrigger("hide" + currentTalkBox.GetOptions());
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        onSpecialOption?.Invoke(currentTalkBox.specialEvent[which]);
+
+        currentTalkBox = currentTalkBox.optionTalk[which];
+        currentTalk = 0;
+        StartCoroutine(TypeText(currentTalkBox.dialogues[0]));
     }
 
     private IEnumerator TypeText(string dialogue)

@@ -116,6 +116,11 @@ public class Player : MonoBehaviour
         itemGameObjects[item.GetID()].SetActive(true);
     }
 
+    public int GetCurrentItemID()
+    {
+        return currentItem.GetID();
+    }
+
     void Update()
     {
         if (bDead)

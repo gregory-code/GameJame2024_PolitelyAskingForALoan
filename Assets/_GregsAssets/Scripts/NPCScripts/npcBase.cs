@@ -65,6 +65,7 @@ public class npcBase : MonoBehaviour
 
         }
 
+        SeesPlayer();
         Talking();
     }
 
