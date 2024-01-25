@@ -13,6 +13,11 @@ public class Door : MonoBehaviour
 
     private Player player;
 
+    [SerializeField] bool lockedDoor;
+    [SerializeField] Animator doorAnimator;
+
+    bool opened;
+
     private void Start()
     {
         popupText.transform.SetParent(GameObject.Find("Canvas").transform);
@@ -35,6 +40,7 @@ public class Door : MonoBehaviour
 
     private void ChangeInteractState(Collider other, bool shouldEnable)
     {
+
         if (other.tag == "Player")
         {
             popupText.SetActive(shouldEnable);
@@ -61,6 +67,9 @@ public class Door : MonoBehaviour
 
     private void Interact()
     {
+        opened = !opened;
+        doorAnimator.SetBool("Open", opened);
+
         onInteract?.Invoke(player);
     }
 }
