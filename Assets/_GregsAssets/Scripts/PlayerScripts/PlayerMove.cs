@@ -17,16 +17,23 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float rotateSpeed = 5f;
 
     private bool bDead;
+    private bool hadGun;
 
     private bool bAiming = false;
     Vector3 playerVelocity;
 
     private void Start()
     {
+        myPlayer.onSelectItem += GetItem;
         myPlayer.onTakeDamage += TookDamage;
         myPlayer.onAim += Aiming;
         myPlayer.onMoveInput += MoveInput;
         myPlayer.onRotate += RotateToTarget;
+    }
+
+    private void GetItem(int itemID)
+    {
+        hadGun = (itemID == 1) ? true : false ;
     }
 
     private void TookDamage(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)
@@ -86,20 +93,25 @@ public class PlayerMove : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, (rotateSpeed * 1.5f) * Time.deltaTime);
     }
 
-    private void UpdateAnimator(Vector3 moveDir)
+    private void UpdateAnimator(Vector3 rawInputs)
     {
-        float rightSpeed = Vector3.Dot(moveDir, transform.right);
-        float forwardSpeed = Vector3.Dot(moveDir, transform.forward);
+        //float rightSpeed = Vector3.Dot(moveDir, transform.right);
+        //float forwardSpeed = Vector3.Dot(moveDir, transform.forward);
+
+        float forwardSpeed = rawInputs.x;
+        float rightSpeed = rawInputs.y;
+
+        Debug.Log(rawInputs.x + " " + rawInputs.y);
 
         if (bAiming == false)
         {
             playerAnimator.SetLayerWeight(1, 0);
-            forwardSpeed = 1;
-            rightSpeed = 0;
+            forwardSpeed = 0;
+            rightSpeed = 1;
         }
 
-        float lerpRight = Mathf.Lerp(playerAnimator.GetFloat("leftSpeed"), rightSpeed, 7 * Time.deltaTime);
-        float lerpFoward = Mathf.Lerp(playerAnimator.GetFloat("fowardSpeed"), forwardSpeed, 7 * Time.deltaTime);
+        float lerpRight = Mathf.Lerp(playerAnimator.GetFloat("leftSpeed"), forwardSpeed, 7 * Time.deltaTime);
+        float lerpFoward = Mathf.Lerp(playerAnimator.GetFloat("fowardSpeed"), rightSpeed, 7 * Time.deltaTime);
 
         playerAnimator.SetFloat("leftSpeed", lerpRight);
         playerAnimator.SetFloat("fowardSpeed", lerpFoward);
@@ -110,7 +122,7 @@ public class PlayerMove : MonoBehaviour
         if(bRotateThatDir)
             RotateToDir(inputVector, cameraFoward);
 
-        UpdateAnimator(transform.TransformDirection(GetMoveDir(inputVector)));
+        UpdateAnimator(inputVector);
 
         characterController.Move(GetMoveDir(inputVector) * currentSpeed * Time.deltaTime);
     }
