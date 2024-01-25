@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.8039348, g: 0.46981937, b: 0.25679258, a: 1}
+  m_IndirectSpecularColor: {r: 0.8037989, g: 0.46985012, b: 0.25659898, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5097,6 +5097,7 @@ MonoBehaviour:
   player: {fileID: 1829330029}
   followTransform: {fileID: 954142341}
   playerFollow: {fileID: 954142341}
+  shaker: {fileID: 20447896}
   cameraWallCheck: {fileID: 412306728}
   cameraYaw: {fileID: 413891733}
   cameraPitch: {fileID: 1085825327}
@@ -5117,6 +5118,8 @@ MonoBehaviour:
   clampMaxRegular: 60
   clampMinADS: -30
   clampMaxADS: 60
+  shakeDuration: 0.2
+  shakeMangintude: 0.01
 --- !u!1 &415903406
 GameObject:
   m_ObjectHideFlags: 0
@@ -5580,7 +5583,7 @@ Transform:
   m_GameObject: {fileID: 470843653}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.039262, y: -0.157, z: 2.893}
+  m_LocalPosition: {x: 2.73, y: -0.157, z: 2.893}
   m_LocalScale: {x: 2.1049, y: 2.1049, z: 2.1049}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -27221,8 +27224,8 @@ MonoBehaviour:
   m_IgnoreNavMeshObstacle: 1
   m_OverrideTileSize: 0
   m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_OverrideVoxelSize: 1
+  m_VoxelSize: 0.2
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: e8d4b2a2ebdb9774a8a9e677ba241b13, type: 2}
   m_BuildHeightMesh: 0
@@ -32766,6 +32769,7 @@ GameObject:
   - component: {fileID: 1829330030}
   - component: {fileID: 1829330027}
   - component: {fileID: 1829330026}
+  - component: {fileID: 1829330031}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -33027,6 +33031,23 @@ MonoBehaviour:
   - {fileID: 860518460}
   - {fileID: 1103655317}
   - {fileID: 1071206029}
+--- !u!114 &1829330031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829330024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b481e1219c5f6fa4b8f5d9413b916849, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1829330029}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  damagedColor: {r: 1, g: 0, b: 0, a: 1}
+  colorAttributeName: _Color
+  lerpSpeed: 2
 --- !u!1 &1832977871
 GameObject:
   m_ObjectHideFlags: 0

@@ -110,21 +110,23 @@ public class copCat : npcBase
     {
         float distance = Vector3.Distance(transform.position, player.transform.position);
 
-        if (distance < (rangeToShoot + 2f) && SeesPlayer())
+        bool seesPlayer = SeesPlayer();
+
+        if (distance < (rangeToShoot + 2f) && seesPlayer)
             ShootAtPlayer();
 
         LookAtPlayer(rotateSpeed);
 
-        if (distance < rangeToShoot && distance > tooClose)
+        if (distance < rangeToShoot && distance > tooClose && seesPlayer)
         {
             agent.isStopped = true;
         }
-        else if(distance > rangeToShoot)
+        else if(distance > rangeToShoot || seesPlayer == false)
         {
             agent.SetDestination(player.transform.position);
             agent.isStopped = false;
         }
-        else
+        else if(seesPlayer)
         {
             Vector3 behindPos = transform.position - (transform.forward * 10);
             agent.SetDestination(behindPos);

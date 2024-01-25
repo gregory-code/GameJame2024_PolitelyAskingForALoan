@@ -101,8 +101,6 @@ public class PlayerMove : MonoBehaviour
         float forwardSpeed = rawInputs.x;
         float rightSpeed = rawInputs.y;
 
-        Debug.Log(rawInputs.x + " " + rawInputs.y);
-
         if (bAiming == false)
         {
             playerAnimator.SetLayerWeight(1, 0);

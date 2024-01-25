@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +9,8 @@ public class PlayerCamera : MonoBehaviour
 
     [SerializeField] Transform followTransform;
     [SerializeField] Transform playerFollow;
+
+    [SerializeField] Transform shaker;
 
     [SerializeField] Transform cameraWallCheck;
 
@@ -56,11 +57,20 @@ public class PlayerCamera : MonoBehaviour
 
     public void Start()
     {
+        player.onTakeDamage += tookDamage;
         clampMin = clampMinRegular;
         clampMax = clampMaxRegular;
         player.onTakeDamage += TookDamage;
         player.onAim += AimInput;
         currentArmLength = closeArmLength;
+    }
+
+    private void tookDamage(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)
+    {
+        if(wouldKill == false)
+        {
+            StartShake();
+        }
     }
 
     private void TookDamage(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)
@@ -83,6 +93,39 @@ public class PlayerCamera : MonoBehaviour
 
         CameraFollow();
         LerpCameraLength();
+    }
+
+    [SerializeField] float shakeDuration = 0.2f;
+    [SerializeField] float shakeMangintude = 0.1f;
+
+    bool shaking;
+
+    public void StartShake()
+    {
+        if (!shaking)
+        {
+            StartCoroutine(ShakeCoroutine());
+        }
+    }
+
+    IEnumerator ShakeCoroutine()
+    {
+        shaking = true;
+        yield return new WaitForSeconds(shakeDuration);
+        shaking = false;
+    }
+
+    private void LateUpdate()
+    {
+        if (shaking)
+        {
+            Vector3 shakeAmount = new Vector3(Random.value, Random.value, Random.value) * shakeMangintude * (Random.value > 0.5f ? 1 : -1);
+            shaker.transform.localPosition += shakeAmount;
+        }
+        else
+        {
+            shaker.transform.localPosition = Vector3.zero;
+        }
     }
 
     private void FixedUpdate()

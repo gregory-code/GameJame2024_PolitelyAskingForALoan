@@ -134,6 +134,7 @@ public class Player : MonoBehaviour
 
         if (bInChat)
         {
+            GoToIdle();
             onRotate?.Invoke(targetNPC.position);
             return;
         }
@@ -142,17 +143,22 @@ public class Player : MonoBehaviour
         MoveInput(true);
     }
 
+    private void GoToIdle()
+    {
+        float lerpRight = Mathf.Lerp(racoonAnimator.GetFloat("leftSpeed"), 0, 7 * Time.deltaTime);
+        float lerpFoward = Mathf.Lerp(racoonAnimator.GetFloat("fowardSpeed"), 0, 7 * Time.deltaTime);
+
+        racoonAnimator.SetFloat("leftSpeed", lerpRight);
+        racoonAnimator.SetFloat("fowardSpeed", lerpFoward);
+    }
+
     private void MoveInput(bool bRotateThatDir)
     {
         Vector2 inputVector = playerControls.Player.Movement.ReadValue<Vector2>();
 
         if (inputVector == Vector2.zero)
         {
-            float lerpRight = Mathf.Lerp(racoonAnimator.GetFloat("leftSpeed"), 0, 7 * Time.deltaTime);
-            float lerpFoward = Mathf.Lerp(racoonAnimator.GetFloat("fowardSpeed"), 0, 7 * Time.deltaTime);
-
-            racoonAnimator.SetFloat("leftSpeed", lerpRight);
-            racoonAnimator.SetFloat("fowardSpeed", lerpFoward);
+            GoToIdle();
             return;
         }
 
@@ -167,6 +173,7 @@ public class Player : MonoBehaviour
         health--;
 
         racoonAnimator.SetTrigger("damaged");
+        racoonAnimator.SetLayerWeight(1, 0);
 
         StartCoroutine(IFrames());
 
