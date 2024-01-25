@@ -110,7 +110,7 @@ public class copCat : npcBase
     {
         float distance = Vector3.Distance(transform.position, player.transform.position);
 
-        if (distance < (rangeToShoot + 0.5f) && SeesPlayer())
+        if (distance < (rangeToShoot + 2f) && SeesPlayer())
             ShootAtPlayer();
 
         LookAtPlayer(rotateSpeed);

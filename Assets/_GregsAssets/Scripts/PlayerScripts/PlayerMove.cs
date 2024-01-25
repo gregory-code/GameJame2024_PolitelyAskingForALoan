@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class PlayerMove : MonoBehaviour
 {
     [SerializeField] CharacterController characterController;
     [SerializeField] Player myPlayer;
+
+    [SerializeField] Animator playerAnimator;
 
     [SerializeField] float gravity = -20f;
     [SerializeField] float currentSpeed = 3f;
@@ -83,10 +86,31 @@ public class PlayerMove : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, (rotateSpeed * 1.5f) * Time.deltaTime);
     }
 
+    private void UpdateAnimator(Vector3 moveDir)
+    {
+        float rightSpeed = Vector3.Dot(moveDir, transform.right);
+        float forwardSpeed = Vector3.Dot(moveDir, transform.forward);
+
+        if (bAiming == false)
+        {
+            playerAnimator.SetLayerWeight(1, 0);
+            forwardSpeed = 1;
+            rightSpeed = 0;
+        }
+
+        float lerpRight = Mathf.Lerp(playerAnimator.GetFloat("leftSpeed"), rightSpeed, 7 * Time.deltaTime);
+        float lerpFoward = Mathf.Lerp(playerAnimator.GetFloat("fowardSpeed"), forwardSpeed, 7 * Time.deltaTime);
+
+        playerAnimator.SetFloat("leftSpeed", lerpRight);
+        playerAnimator.SetFloat("fowardSpeed", lerpFoward);
+    }
+
     private void MoveInput(Vector2 inputVector, Vector3 cameraFoward, bool bRotateThatDir)
     {
         if(bRotateThatDir)
             RotateToDir(inputVector, cameraFoward);
+
+        UpdateAnimator(transform.TransformDirection(GetMoveDir(inputVector)));
 
         characterController.Move(GetMoveDir(inputVector) * currentSpeed * Time.deltaTime);
     }

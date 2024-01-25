@@ -46,9 +46,13 @@ public class Player : MonoBehaviour
     public delegate void OnInventory(bool state);
     public event OnInventory onInventory;
 
+    public delegate void OnSettings(bool state);
+    public event OnSettings onSettings;
+
     private bool bInChat = false;
     private bool bAiming = false;
     private bool bInventory = false;
+    private bool bSettings = false;
     private bool bDead;
     private bool bInvincible = false;
     private Transform targetNPC = null;
@@ -106,10 +110,12 @@ public class Player : MonoBehaviour
         if(item.GetID() == 1)
         {
             onHESGOTAGUN?.Invoke(true);
+            racoonAnimator.SetBool("gun", true);
         }
         else
         {
             onHESGOTAGUN?.Invoke(false);
+            racoonAnimator.SetBool("gun", false);
         }
         currentItem = item;
         onSelectItem?.Invoke(item.GetID());
@@ -141,7 +147,14 @@ public class Player : MonoBehaviour
         Vector2 inputVector = playerControls.Player.Movement.ReadValue<Vector2>();
 
         if (inputVector == Vector2.zero)
+        {
+            float lerpRight = Mathf.Lerp(racoonAnimator.GetFloat("leftSpeed"), 0, 7 * Time.deltaTime);
+            float lerpFoward = Mathf.Lerp(racoonAnimator.GetFloat("fowardSpeed"), 0, 7 * Time.deltaTime);
+
+            racoonAnimator.SetFloat("leftSpeed", lerpRight);
+            racoonAnimator.SetFloat("fowardSpeed", lerpFoward);
             return;
+        }
 
         onMoveInput?.Invoke(inputVector, playerCamera.GetCameraFoward(), bRotateThatDir);
     }
@@ -152,6 +165,8 @@ public class Player : MonoBehaviour
             return;
 
         health--;
+
+        racoonAnimator.SetTrigger("damaged");
 
         StartCoroutine(IFrames());
 
@@ -185,7 +200,7 @@ public class Player : MonoBehaviour
         if (bDead)
             return;
 
-        if (bInventory || bAiming)
+        if (bInventory || bAiming || bSettings)
             return;
 
         if (context.performed)
@@ -199,12 +214,14 @@ public class Player : MonoBehaviour
         if (bDead)
             return;
 
-        if (bInventory)
+        if (bInventory || bSettings)
             return;
 
         if (context.performed || context.canceled)
         {
             bAiming = !bAiming;
+            float weight = (bAiming) ? 1 : 0 ;
+            racoonAnimator.SetLayerWeight(1, weight);
             racoonAnimator.SetBool("aiming", bAiming);
             onAim?.Invoke(bAiming);
         }
@@ -215,13 +232,34 @@ public class Player : MonoBehaviour
         if (bDead)
             return;
 
-        if (bAiming || bInChat)
+        if (bAiming || bInChat || bSettings)
             return;
 
         if (context.performed || context.canceled)
         {
             bInventory = !bInventory;
+            if(bAiming == true)
+            {
+                bAiming = false;
+                racoonAnimator.SetBool("aiming", bAiming);
+                onAim?.Invoke(bAiming);
+            }
             onInventory?.Invoke(bInventory);
+        }
+    }
+
+    public void Escape(InputAction.CallbackContext context)
+    {
+        if (bDead)
+            return;
+
+        if (bAiming || bInChat || bInventory)
+            return;
+
+        if (context.performed)
+        {
+            bSettings = !bSettings;
+            onSettings?.Invoke(bSettings);
         }
     }
 
@@ -233,7 +271,7 @@ public class Player : MonoBehaviour
         if (currentItem == null)
             return;
 
-        if (bInventory || !bAiming || currentItem.GetID() != 1)
+        if (bInventory || !bAiming || currentItem.GetID() != 1 || bSettings)
             return;
 
         if (context.performed && currentAmmo > 0)
@@ -261,7 +299,7 @@ public class Player : MonoBehaviour
         if (bDead)
             return;
 
-        if (bInventory || bInChat)
+        if (bInventory || bInChat || bSettings)
             return;
 
         if (context.performed && ammoReserves > 0 && currentAmmo < maxAmmo)
