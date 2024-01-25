@@ -15,17 +15,21 @@ MonoBehaviour:
   dialogues:
   - Very well, I should have seen it coming...
   hasOption: 0
-  options: 0
+  options: 2
+  specialEvent:
+  - 
+  - 
+  - 
   optionSprites:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   optionText:
-  - 
-  - 
+  - Shoot
+  - I change my mind
   - 
   optionItemID: 000000000000000000000000
   optionTalk:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 6e18841c70d0e7141b1cfa92af4a4083, type: 2}
+  - {fileID: 11400000, guid: cb17752f028a0cd40977a53406e7b953, type: 2}
   - {fileID: 0}

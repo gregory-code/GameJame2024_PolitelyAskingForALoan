@@ -20,6 +20,9 @@ public class npcBase : MonoBehaviour
     [SerializeField] float eyeHeight = 0.65f;
     [SerializeField] float halfPeripheralAngle = 80f;
     [SerializeField] float attentionSpanInSeconds = 5;
+    [SerializeField] GameObject suprised;
+    [SerializeField] Animator suprisedAnimator;
+    [SerializeField] Transform attachPoint;
 
     [Header("Speed")]
     public float rotateSpeed = 7;
@@ -38,6 +41,13 @@ public class npcBase : MonoBehaviour
 
     public delegate void OnDeath(Vector3 shotDirection, Rigidbody shotRigidbody);
     public event OnDeath onDeath;
+
+    private bool shocked;
+
+    public void Awake()
+    {
+        suprised.transform.SetParent(GameObject.Find("Canvas").transform);
+    }
 
     public void GetHit(Vector3 shotDirection, Rigidbody shotRigidbody, bool headShot)
     {
@@ -61,12 +71,22 @@ public class npcBase : MonoBehaviour
                 player.onTakeDamage += PlayerHit;
                 player.onBlasting += HeardThat;
                 player.onHESGOTAGUN += SeesGun;
+                this.playerLocation = player.transform;
             }
 
         }
 
+        suprised.transform.position = Camera.main.WorldToScreenPoint(attachPoint.position);
+
         SeesPlayer();
+        ShockLooking();
         Talking();
+    }
+
+    private void ShockLooking()
+    {
+        if(shocked)
+            LookAtPlayer(5);
     }
 
     public bool playerHasGun;
@@ -110,10 +130,9 @@ public class npcBase : MonoBehaviour
         return npcColor;
     }
 
-    public void TalkState(Transform playerLocation, bool state)
+    public void TalkState(bool state)
     {
         bTalking = state;
-        this.playerLocation = playerLocation;
         npcAnimator.SetBool("talking", state);
     }
 
@@ -122,16 +141,20 @@ public class npcBase : MonoBehaviour
         if (bTalking)
         {
             agent.isStopped = true;
-
-            Vector3 lookDirection = playerLocation.position - transform.position;
-            lookDirection.y = 0;
-
-            Quaternion rotate = Quaternion.LookRotation(lookDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotate, 3 * Time.deltaTime);
+            LookAtPlayer(3);
             return true;
         }
 
         return false;
+    }
+
+    public void LookAtPlayer(float rotateSpeed)
+    {
+        Vector3 lookDirection = playerLocation.position - transform.position;
+        lookDirection.y = 0;
+
+        Quaternion rotate = Quaternion.LookRotation(lookDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotate, rotateSpeed * Time.deltaTime);
     }
 
     public bool SeesPlayer()
@@ -160,9 +183,19 @@ public class npcBase : MonoBehaviour
         if (playerHasGun && seenGun == false)
         {
             seenGun = true;
-            onSeesGun?.Invoke();
+            suprisedAnimator.SetTrigger("suprsied");
+            StartCoroutine(Shocked());
         }
         return true;
+    }
+
+    private IEnumerator Shocked()
+    {
+        agent.isStopped = true;
+        shocked = true;
+        yield return new WaitForSeconds(1);
+        shocked = false;
+        onSeesGun?.Invoke();
     }
 
     public bool seenGun;

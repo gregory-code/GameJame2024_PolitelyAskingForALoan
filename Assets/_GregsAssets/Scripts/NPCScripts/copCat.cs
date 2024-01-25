@@ -30,7 +30,7 @@ public class copCat : npcBase
 
     private void StartTalking(Player interactingPlayer)
     {
-        TalkState(interactingPlayer.transform, true);
+        TalkState(true);
         GameObject.FindFirstObjectByType<ChatEngine>().StartChat(this, this.transform, GetName(), firstTalk, GetColor());
     }
 
@@ -113,11 +113,7 @@ public class copCat : npcBase
         if (distance < (rangeToShoot + 0.5f) && SeesPlayer())
             ShootAtPlayer();
 
-        Vector3 lookDirection = player.transform.position - transform.position;
-        lookDirection.y = 0;
-
-        Quaternion rotate = Quaternion.LookRotation(lookDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotate, rotateSpeed * Time.deltaTime);
+        LookAtPlayer(rotateSpeed);
 
         if (distance < rangeToShoot && distance > tooClose)
         {

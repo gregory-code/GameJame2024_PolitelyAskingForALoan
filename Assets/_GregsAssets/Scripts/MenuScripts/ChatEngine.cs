@@ -96,6 +96,9 @@ public class ChatEngine : MonoBehaviour
 
     public void SelectOption(int which)
     {
+        if (options[which].sprite == redOption)
+            return;
+
         chatAnimator.SetTrigger("hide" + currentTalkBox.GetOptions());
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -121,7 +124,7 @@ public class ChatEngine : MonoBehaviour
     private void EndChat()
     {
         bInChat = false;
-        currentNPC.TalkState(null, false);
+        currentNPC.TalkState(false);
         player.SetTargetNPC(null, false);
         chatAnimator.SetTrigger("endChat");
 

@@ -7,11 +7,11 @@ using UnityEngine;
 public class ChatInteraction : MonoBehaviour
 {
     [SerializeField] GameObject popupText;
-    [SerializeField] GameObject canvasToAttach;
     [SerializeField] Transform attachPoint;
 
     public delegate void OnInteract(Player interactingPlayer);
     public event OnInteract onInteract;
+
 
     private bool bDisabled;
 
@@ -19,7 +19,7 @@ public class ChatInteraction : MonoBehaviour
 
     private void Start()
     {
-        popupText.transform.SetParent(canvasToAttach.transform);
+        popupText.transform.SetParent(GameObject.Find("Canvas").transform);
     }
 
     private void Update()
