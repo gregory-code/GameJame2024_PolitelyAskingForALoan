@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 246cf1daabbf2e546bab0675ce98210c
+guid: 1d6b8595e22e41f4db95378f5e6d6395
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Run
-      takeName: Run
-      internalID: 5522812681064789136
+      name: StrafeRight
+      takeName: StrafeRight
+      internalID: 1671312553167048998
       firstFrame: 0
-      lastFrame: 28
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

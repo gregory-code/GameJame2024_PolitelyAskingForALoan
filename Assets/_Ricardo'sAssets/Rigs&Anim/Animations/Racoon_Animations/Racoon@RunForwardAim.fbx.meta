@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 246cf1daabbf2e546bab0675ce98210c
+guid: c185fe728e92abe4ab93a0a62e3cb812
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Run
-      takeName: Run
-      internalID: 5522812681064789136
+      name: RunForwardAim
+      takeName: RunForwardAim
+      internalID: -7902904189513981093
       firstFrame: 0
-      lastFrame: 28
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
