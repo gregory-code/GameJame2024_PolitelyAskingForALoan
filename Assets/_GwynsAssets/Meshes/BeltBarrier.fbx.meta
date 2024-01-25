@@ -3,7 +3,12 @@ guid: 7b49b27b7e565804bba81186e71e1484
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BeltBarrier_Mtl
+    second: {fileID: 2100000, guid: 29ddc11025f3e7344859c55569ee1e94, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
