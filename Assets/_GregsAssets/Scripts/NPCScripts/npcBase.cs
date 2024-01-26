@@ -44,6 +44,8 @@ public class npcBase : MonoBehaviour
 
     private bool shocked;
 
+    public Rigidbody leg;
+
     public void Awake()
     {
         suprised.transform.SetParent(GameObject.Find("Canvas").transform);

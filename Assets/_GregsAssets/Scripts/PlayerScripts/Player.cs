@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] ItemBase nothingItem;
     [SerializeField] ItemBase gunItem;
+    [SerializeField] ItemBase nuke;
 
     private ItemBase currentItem;
 
@@ -92,6 +93,7 @@ public class Player : MonoBehaviour
 
         playerInventory.AddItem(nothingItem);
         playerInventory.AddItem(gunItem);
+        playerInventory.AddItem(nuke);
 
         ItemSlot[] slots = playerInventory.GetSlots();
         foreach(ItemSlot slot in slots)
@@ -319,6 +321,15 @@ public class Player : MonoBehaviour
             if (!bAiming)
                 return;
 
+            if(currentItem.GetID() == 4)
+            {
+                racoonAnimator.SetTrigger("GrenadeThrow");
+                racoonAnimator.SetLayerWeight(1, 1);
+                reloading = true;
+                StartCoroutine(ThrowNade());
+                return;
+            }
+
             if (currentItem.GetID() != 1)
                 return;
 
@@ -331,6 +342,20 @@ public class Player : MonoBehaviour
                 onBlasting?.Invoke();
             }
         }
+    }
+
+    [SerializeField] GameObject nade;
+    [SerializeField] Transform handTransform;
+
+    private IEnumerator ThrowNade()
+    {
+        yield return new WaitForSeconds(1.5f);
+        GameObject nadeClone = Instantiate(nade, handTransform.position, handTransform.rotation);
+        Rigidbody rbody = nadeClone.GetComponent<Rigidbody>();
+        rbody.AddForce(Camera.main.transform.forward * 15, ForceMode.VelocityChange);
+        reloading = false;
+        playerInventory.RemoveItem(currentItem);
+        SelectItem(nothingItem);
     }
 
     private IEnumerator Eatting()

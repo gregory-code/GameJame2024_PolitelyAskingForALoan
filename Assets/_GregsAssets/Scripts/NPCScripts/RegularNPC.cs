@@ -17,6 +17,7 @@ public class RegularNPC : npcBase
 
     void Start()
     {
+        escape = GameObject.Find("escapePoint").GetComponent<Transform>();
         myInteraction.onInteract += StartTalking;
         onHeardThat += SeesGun;
         onSeesGun += SeesGun;
@@ -25,6 +26,11 @@ public class RegularNPC : npcBase
 
     private void SeesGun()
     {
+        if (alearted == true)
+            return;
+
+        alearted = true;
+
         currentTalk = gunTalk;
         StartCoroutine(waitRun());
     }
@@ -34,10 +40,9 @@ public class RegularNPC : npcBase
         alearted = true;
         yield return new WaitForSeconds(1f);
         alearted = false;
-        neeko = true;
         npcAnimator.SetTrigger("panic");
-        escape = GameObject.Find("escapePoint").GetComponent<Transform>();
         agent.destination = escape.position;
+        neeko = true;
     }
 
     private void StartTalking(Player interactingPlayer)
@@ -51,12 +56,12 @@ public class RegularNPC : npcBase
         if(alearted)
             LookAtPlayer(rotateSpeed);
 
-        if (neeko == false)
-            return;
-
-        agent.destination = escape.position;
-        float distance = Vector3.Distance(player.transform.position, escape.position);
-        if (distance <= 1)
-            Destroy(this.gameObject);
+        if (neeko == true)
+        {
+            agent.destination = escape.position;
+            float distance = Vector3.Distance(player.transform.position, escape.position);
+            if (distance <= 1)
+                Destroy(this.gameObject);
+        }
     }
 }
