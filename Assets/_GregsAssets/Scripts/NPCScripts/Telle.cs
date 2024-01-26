@@ -39,7 +39,7 @@ public class Telle : npcBase
 
     private void StartTalking(Player interactingPlayer)
     {
-        if (GameObject.FindObjectOfType<ChatEngine>().bInChat)
+        if (interactingPlayer.IsInChat())
             return;
 
         TalkState(true);

@@ -36,11 +36,15 @@ public class ChatEngine : MonoBehaviour
         if (bInChat)
             return;
 
+        Debug.Log("Start Chat");
+
         chatAnimator.SetTrigger("start");
         chatAnimator.ResetTrigger("hide2");
         chatAnimator.ResetTrigger("show2");
         chatAnimator.ResetTrigger("hide3");
         chatAnimator.ResetTrigger("show3");
+
+        dialogueText.text = "";
 
         bInChat = true;
         currentNPC = myNPC;
@@ -61,6 +65,7 @@ public class ChatEngine : MonoBehaviour
 
     private void GoNext()
     {
+
         if(currentTalk < currentTalkBox.dialogues.Length - 1)
         {
             StopAllCoroutines();
@@ -105,6 +110,8 @@ public class ChatEngine : MonoBehaviour
         if (options[which].sprite == redOption)
             return;
 
+        dialogueText.text = "";
+
         chatAnimator.SetTrigger("hide" + currentTalkBox.GetOptions());
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -129,13 +136,17 @@ public class ChatEngine : MonoBehaviour
 
     private void EndChat()
     {
-        Debug.Log("Finished Chat");
         player.onInteract -= GoNext;
-        
-        bInChat = false;
+        dialogueText.text = "";
         currentNPC.TalkState(false);
         player.SetTargetNPC(null, false);
         chatAnimator.SetTrigger("endChat");
+        StartCoroutine(EndingChat());
+    }
 
+    private IEnumerator EndingChat()
+    {
+        yield return new WaitForEndOfFrame();
+        bInChat = false;
     }
 }

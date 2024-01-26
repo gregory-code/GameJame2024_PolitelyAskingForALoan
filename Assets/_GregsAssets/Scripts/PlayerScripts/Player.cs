@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
     public delegate void OnSettings(bool state);
     public event OnSettings onSettings;
 
-    private bool bInChat = false;
+    [SerializeField] bool bInChat = false;
     private bool bAiming = false;
     private bool bInventory = false;
     private bool bSettings = false;
@@ -520,6 +520,17 @@ public class Player : MonoBehaviour
     {
         targetNPC = newTarget;
         bInChat = state;
+
+        if(state == false)
+            StartCoroutine(STOPCHATTING());
+    }
+
+    private IEnumerator STOPCHATTING()
+    {
+        yield return new WaitForEndOfFrame();
+        GameObject.FindObjectOfType<ChatEngine>().bInChat = false;
+        bInChat = false;
+        targetNPC = null;
     }
 
     public bool IsInChat()
