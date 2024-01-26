@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
@@ -48,6 +49,9 @@ public class Player : MonoBehaviour
 
     public delegate void OnInventory(bool state);
     public event OnInventory onInventory;
+
+    [SerializeField] AudioMixerSnapshot regularSnapshot;
+    [SerializeField] AudioMixerSnapshot mutedSnapshot;
 
     public delegate void OnSettings(bool state);
     public event OnSettings onSettings;
@@ -260,17 +264,30 @@ public class Player : MonoBehaviour
         if (bAiming || bInChat || bSettings)
             return;
 
-        if (context.performed || context.canceled)
+        if (context.performed)
         {
-            bInventory = !bInventory;
-            if(bAiming == true)
-            {
-                bAiming = false;
-                racoonAnimator.SetBool("aiming", bAiming);
-                onAim?.Invoke(bAiming);
-            }
-            onInventory?.Invoke(bInventory);
+            bInventory = true;
+            mutedSnapshot.TransitionTo(0.5f);
+            ManageInventory();
         }
+
+        if(context.canceled)
+        {
+            bInventory = false;
+            regularSnapshot.TransitionTo(0.5f);
+            ManageInventory();
+        }
+    }
+
+    private void ManageInventory()
+    {
+        if (bAiming == true)
+        {
+            bAiming = false;
+            racoonAnimator.SetBool("aiming", bAiming);
+            onAim?.Invoke(bAiming);
+        }
+        onInventory?.Invoke(bInventory);
     }
 
     public void Escape(InputAction.CallbackContext context)
@@ -284,6 +301,14 @@ public class Player : MonoBehaviour
         if (context.performed)
         {
             bSettings = !bSettings;
+            if(bSettings)
+            {
+                mutedSnapshot.TransitionTo(0.5f);
+            }
+            else
+            {
+                regularSnapshot.TransitionTo(0.5f);
+            }
             onSettings?.Invoke(bSettings);
         }
     }

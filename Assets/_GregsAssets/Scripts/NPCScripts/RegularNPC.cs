@@ -12,8 +12,8 @@ public class RegularNPC : npcBase
 
     TalkBox currentTalk;
 
-    bool neeko;
-    bool alearted;
+    [SerializeField] bool neeko;
+    [SerializeField] bool alearted;
 
     void Start()
     {
@@ -28,6 +28,12 @@ public class RegularNPC : npcBase
     {
         if (alearted == true)
             return;
+
+        if (neeko == true)
+        {
+            agent.destination = escape.position;
+            return;
+        }
 
         alearted = true;
 
@@ -58,9 +64,10 @@ public class RegularNPC : npcBase
 
         if (neeko == true)
         {
+            agent.isStopped = false;
             agent.destination = escape.position;
-            float distance = Vector3.Distance(player.transform.position, escape.position);
-            if (distance <= 1)
+            float distance = Vector3.Distance(transform.position, escape.position);
+            if (distance <= 2)
                 Destroy(this.gameObject);
         }
     }
