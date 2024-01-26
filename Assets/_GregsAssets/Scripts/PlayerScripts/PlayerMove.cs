@@ -101,7 +101,7 @@ public class PlayerMove : MonoBehaviour
         float forwardSpeed = rawInputs.x;
         float rightSpeed = rawInputs.y;
 
-        if (bAiming == false)
+        if (bAiming == false && myPlayer.reloading == false)
         {
             playerAnimator.SetLayerWeight(1, 0);
             forwardSpeed = 0;

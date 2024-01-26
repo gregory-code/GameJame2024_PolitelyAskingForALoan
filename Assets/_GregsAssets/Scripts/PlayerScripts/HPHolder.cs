@@ -13,7 +13,13 @@ public class HPHolder : MonoBehaviour
 
     private void Start()
     {
+        player.onHealHealth += Heal;
         player.onTakeDamage += TookDamage;
+    }
+
+    private void Heal()
+    {
+        Heal(1);
     }
 
     private void TookDamage(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)

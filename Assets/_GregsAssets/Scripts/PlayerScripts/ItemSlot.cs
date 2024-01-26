@@ -53,6 +53,11 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         originalScale = transform.localScale;
     }
 
+    public int CheckItemID()
+    {
+        return myItem.GetID();
+    }
+
     private void Openinventory(bool state)
     {
         if(state)
@@ -73,6 +78,15 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         itemImage.color = Transparent;
         itemNameText.text = item.GetName();
         bHasItem = true;
+    }
+
+    public void RemoveItem()
+    {
+        myItem = null;
+        itemImage.sprite = null;
+        itemImage.color = fullyTransparent;
+        itemNameText.text = "";
+        bHasItem = false;
     }
 
     private void Update()

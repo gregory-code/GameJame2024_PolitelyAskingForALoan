@@ -29,6 +29,18 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    public void RemoveItem(ItemBase itemToRemove)
+    {
+        foreach (ItemSlot slot in itemSlots)
+        {
+            if (slot.CheckItemID() == itemToRemove.GetID())
+            {
+                slot.RemoveItem();
+                return;
+            }
+        }
+    }
+
     public ItemSlot[] GetSlots()
     {
         return itemSlots;

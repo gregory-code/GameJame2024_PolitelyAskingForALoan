@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
     public delegate void OnInteract();
     public event OnInteract onInteract;
 
+    public delegate void OnHealHealth();
+    public event OnHealHealth onHealHealth;
+
     public delegate void OnBlasting();
     public event OnBlasting onBlasting;
 
@@ -65,6 +68,8 @@ public class Player : MonoBehaviour
     {
         return headTransform;
     }
+
+    public bool reloading;
 
     private int currentAmmo;
     int ammoReserves = 5;
@@ -221,17 +226,28 @@ public class Player : MonoBehaviour
         if (bDead)
             return;
 
-        if (bInventory || bSettings)
+        if (bInventory || bSettings || reloading)
             return;
 
-        if (context.performed || context.canceled)
+        if (context.performed)
         {
-            bAiming = !bAiming;
-            float weight = (bAiming) ? 1 : 0 ;
-            racoonAnimator.SetLayerWeight(1, weight);
-            racoonAnimator.SetBool("aiming", bAiming);
-            onAim?.Invoke(bAiming);
+            bAiming = true;
+            ProcessAimInput();
         }
+
+        if(context.canceled)
+        {
+            bAiming = false;
+            ProcessAimInput();
+        }
+    }
+
+    private void ProcessAimInput()
+    {
+        float weight = (bAiming) ? 1 : 0;
+        racoonAnimator.SetLayerWeight(1, weight);
+        racoonAnimator.SetBool("aiming", bAiming);
+        onAim?.Invoke(bAiming);
     }
 
     public void InventoryInput(InputAction.CallbackContext context)
@@ -272,23 +288,60 @@ public class Player : MonoBehaviour
 
     public void BlastingInput(InputAction.CallbackContext context)
     {
-        if (bDead)
-            return;
-
-        if (currentItem == null)
-            return;
-
-        if (bInventory || !bAiming || currentItem.GetID() != 1 || bSettings)
-            return;
-
-        if (context.performed && currentAmmo > 0)
+        if(context.performed)
         {
-            racoonAnimator.SetTrigger("shoot");
+            if (bDead || reloading)
+                return;
 
-            currentAmmo -= 1;
+            if (bInChat)
+            {
+                onInteract?.Invoke();
+                return;
+            }
 
-            onBlasting?.Invoke();
+            if (currentItem == null || bSettings || bInventory)
+                return;
+
+            if (currentItem.GetID() == 2 || currentItem.GetID() == 3)
+            {
+                if (health >= 3)
+                {
+                    GameObject.FindFirstObjectByType<Notification>().CreateNotification("Health is already full!", Color.green, currentItem.GetImage());
+                    return;
+                }
+                racoonAnimator.SetTrigger("Eat");
+                racoonAnimator.SetLayerWeight(1, 1);
+                reloading = true;
+                StartCoroutine(Eatting());
+                return;
+            }
+
+            if (!bAiming)
+                return;
+
+            if (currentItem.GetID() != 1)
+                return;
+
+            if (currentAmmo > 0)
+            {
+                racoonAnimator.SetTrigger("shoot");
+
+                currentAmmo -= 1;
+
+                onBlasting?.Invoke();
+            }
         }
+    }
+
+    private IEnumerator Eatting()
+    {
+        yield return new WaitForSeconds(1f);
+        reloading = false;
+        health += 1;
+        onHealHealth?.Invoke();
+        playerInventory.RemoveItem(currentItem);
+        SelectItem(nothingItem);
+
     }
 
     public void PickUpAmmo(int amount)
@@ -306,7 +359,7 @@ public class Player : MonoBehaviour
         if (bDead)
             return;
 
-        if (bInventory || bInChat || bSettings)
+        if (bInventory || bInChat || bSettings || reloading)
             return;
 
         if (context.performed && ammoReserves > 0 && currentAmmo < maxAmmo)
@@ -314,19 +367,35 @@ public class Player : MonoBehaviour
             int amountReloading = maxAmmo - currentAmmo;
             ammoReserves -= amountReloading;
 
-            while(ammoReserves < 0)
-            {
-                amountReloading--;
-                ammoReserves++;
-            }
-
-            currentAmmo += amountReloading;
-            onReload?.Invoke(amountReloading);
+            racoonAnimator.SetTrigger("Reload");
+            racoonAnimator.SetLayerWeight(1, 1);
+            reloading = true;
+            bAiming = false;
+            racoonAnimator.SetBool("aiming", bAiming);
+            onAim?.Invoke(bAiming);
+            StartCoroutine(reloadingWait(amountReloading));
         }
     }
 
-    private void AddItem(ItemBase itemToAdd)
+    private IEnumerator reloadingWait(int amountReloading)
     {
+        yield return new WaitForSeconds(1.4f);
+        reloading = false;
+        while (ammoReserves < 0)
+        {
+            amountReloading--;
+            ammoReserves++;
+        }
+
+        
+
+        currentAmmo += amountReloading;
+        onReload?.Invoke(amountReloading);
+    }
+
+    public void AddItem(ItemBase itemToAdd)
+    {
+        GameObject.FindFirstObjectByType<Notification>().CreateNotification("- Picked Up -    " + itemToAdd.GetName(), Color.white, itemToAdd.GetImage());
         playerInventory.AddItem(itemToAdd);
     }
 
