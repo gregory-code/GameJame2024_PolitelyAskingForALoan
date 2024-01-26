@@ -133,7 +133,6 @@ public class Player : MonoBehaviour
                 if (bEpicMusic == false)
                 {
                     bEpicMusic = true;
-                    GameObject.Find("robed_a_bank").GetComponent<AudioSource>().Play();
                 }
                 break;
         }
@@ -191,6 +190,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        float lerp = (bEpicMusic) ? 1 : 0.006f;
+        float volume = GameObject.Find("robed_a_bank").GetComponent<AudioSource>().volume;
+        GameObject.Find("robed_a_bank").GetComponent<AudioSource>().volume = Mathf.Lerp(volume, lerp, 5 * Time.deltaTime);
+
         if (bDead)
             return;
 
@@ -419,7 +422,6 @@ public class Player : MonoBehaviour
                 if(bEpicMusic == false)
                 {
                     bEpicMusic = true;
-                    GameObject.Find("robed_a_bank").GetComponent<AudioSource>().PlayDelayed(.5f);
                 }
 
                 currentAmmo -= 1;
