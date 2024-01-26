@@ -30,7 +30,7 @@ public class SettingsMenu1 : MonoBehaviour
     private void LateUpdate()
     {
         float alpha = (bInSettings) ? 1 : 0;
-        settingsGroup.alpha = Mathf.Lerp(settingsGroup.alpha, alpha, 0.2f);
+        settingsGroup.alpha = Mathf.Lerp(settingsGroup.alpha, alpha, 1f);
     }
 
     public void RestartLevel()
@@ -47,5 +47,10 @@ public class SettingsMenu1 : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void Credits()
+    {
+        SceneManager.LoadScene("creditsScene");
     }
 }

@@ -49,7 +49,7 @@ public class PlayerInventory : MonoBehaviour
     private void LateUpdate()
     {
         float alpha = (bInventory) ? 1 : 0;
-        inventoryGroup.alpha = Mathf.Lerp(inventoryGroup.alpha, alpha, 0.2f);
+        inventoryGroup.alpha = Mathf.Lerp(inventoryGroup.alpha, alpha, 1f);
     }
 
     private void ToggleInventory(bool state)

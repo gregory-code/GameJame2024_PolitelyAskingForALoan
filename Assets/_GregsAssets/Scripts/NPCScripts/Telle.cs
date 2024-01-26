@@ -21,6 +21,7 @@ public class Telle : npcBase
         onSeesGun += SeesGun;
         onSpecialEvent += SpecialEvent;
         currentTalk = firstTalk;
+        StartCoroutine(AskLoan());
     }
 
     private IEnumerator AskLoan()
@@ -40,6 +41,8 @@ public class Telle : npcBase
                 break;
 
             case "Credits":
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 SceneManager.LoadScene("creditsScene");
                 break;
         }

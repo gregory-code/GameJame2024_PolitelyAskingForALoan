@@ -135,6 +135,10 @@ public class Player : MonoBehaviour
                     bEpicMusic = true;
                 }
                 break;
+
+            case "Credits":
+                onSpecialEvent?.Invoke(option);
+                break;
         }
     }
 
