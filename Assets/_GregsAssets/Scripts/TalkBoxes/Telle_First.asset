@@ -19,7 +19,7 @@ MonoBehaviour:
   options: 2
   specialEvent:
   - 
-  - 
+  - StartRun
   - 
   optionSprites:
   - {fileID: 0}
@@ -30,6 +30,6 @@ MonoBehaviour:
   - Maybe this will change your mind.
   optionItemID: 000000000000000000000000
   optionTalk:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 72ee91af1cc0f2146bfc2d5335f4f0f7, type: 2}
+  - {fileID: 11400000, guid: 2afc83ba291740a41aa3a85e81a5debc, type: 2}
   - {fileID: 0}

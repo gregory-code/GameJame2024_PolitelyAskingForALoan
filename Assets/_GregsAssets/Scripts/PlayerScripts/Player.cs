@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -31,8 +31,14 @@ public class Player : MonoBehaviour
     public delegate void OnBlasting();
     public event OnBlasting onBlasting;
 
+    public delegate void OnSpecialEvent(string eventName);
+    public event OnSpecialEvent onSpecialEvent;
+
     public delegate void OnHESGOTAGUN(bool bHasIt);
     public event OnHESGOTAGUN onHESGOTAGUN;
+
+    public delegate void OnHEHASPOOPONHISHAND(bool hasPoop);
+    public event OnHEHASPOOPONHISHAND onHEHASPOOPONHISHAND;
 
     public delegate void OnTakeDamage(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill);
     public event OnTakeDamage onTakeDamage;
@@ -55,6 +61,8 @@ public class Player : MonoBehaviour
     [SerializeField] AudioMixerSnapshot regularSnapshot;
     [SerializeField] AudioMixerSnapshot mutedSnapshot;
 
+    [SerializeField] TextMeshProUGUI theyrehere;
+
     public delegate void OnSettings(bool state);
     public event OnSettings onSettings;
 
@@ -66,6 +74,8 @@ public class Player : MonoBehaviour
     private bool bInvincible = false;
     private Transform targetNPC = null;
     [SerializeField] Transform followTransform;
+
+    [SerializeField] ChatEngine chat;
 
     [SerializeField] Animator racoonAnimator;
     
@@ -99,7 +109,8 @@ public class Player : MonoBehaviour
 
         playerInventory.AddItem(nothingItem);
         playerInventory.AddItem(gunItem);
-        playerInventory.AddItem(nuke);
+
+        chat.onSpecialOption += SpecialDialogue;
 
         ItemSlot[] slots = playerInventory.GetSlots();
         foreach(ItemSlot slot in slots)
@@ -109,6 +120,23 @@ public class Player : MonoBehaviour
 
         playerControls = new PlayerControls();
         playerControls.Player.Enable();
+    }
+
+    [SerializeField] ItemBase key;
+    private void SpecialDialogue(string option)
+    {
+        switch(option)
+        {
+            case "StartRun":
+                AddItem(key);
+                onSpecialEvent?.Invoke(option);
+                if (bEpicMusic == false)
+                {
+                    bEpicMusic = true;
+                    GameObject.Find("robed_a_bank").GetComponent<AudioSource>().Play();
+                }
+                break;
+        }
     }
 
     private void SelectItem(ItemBase item)
@@ -139,11 +167,25 @@ public class Player : MonoBehaviour
             onHESGOTAGUN?.Invoke(false);
             racoonAnimator.SetBool("gun", false);
         }
+
+        if(currentItem.GetID() == 5)
+        {
+            onHEHASPOOPONHISHAND?.Invoke(true);
+        }
+        else
+        {
+            onHEHASPOOPONHISHAND?.Invoke(false);
+        }
         onSelectItem?.Invoke(currentItem.GetID());
     }
 
+
+
     public int GetCurrentItemID()
     {
+        if (currentItem == null)
+            return 0;
+
         return currentItem.GetID();
     }
 
@@ -305,7 +347,7 @@ public class Player : MonoBehaviour
         if (bDead)
             return;
 
-        if (bAiming || bInChat || bInventory)
+        if (bAiming || bInventory)
             return;
 
         if (context.performed)
@@ -377,7 +419,7 @@ public class Player : MonoBehaviour
                 if(bEpicMusic == false)
                 {
                     bEpicMusic = true;
-                    GameObject.Find("robed_a_bank").GetComponent<AudioSource>().Play();
+                    GameObject.Find("robed_a_bank").GetComponent<AudioSource>().PlayDelayed(.5f);
                 }
 
                 currentAmmo -= 1;
@@ -465,6 +507,11 @@ public class Player : MonoBehaviour
 
     public void AddItem(ItemBase itemToAdd)
     {
+        if(itemToAdd.GetID() == 6)
+        {
+            theyrehere.text = "ESCAPE TO YOUR CAR";
+            GameObject.FindFirstObjectByType<winBox>().CanWin();
+        }
         GameObject.FindFirstObjectByType<Notification>().CreateNotification("- Picked Up -    " + itemToAdd.GetName(), Color.white, itemToAdd.GetImage());
         playerInventory.AddItem(itemToAdd);
     }

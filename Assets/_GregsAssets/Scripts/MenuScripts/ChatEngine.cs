@@ -26,7 +26,7 @@ public class ChatEngine : MonoBehaviour
     public delegate void OnSpecialOption(string option);
     public event OnSpecialOption onSpecialOption;
 
-    bool bInChat = false;
+    public bool bInChat = false;
     npcBase currentNPC;
     TalkBox currentTalkBox;
     int currentTalk;
@@ -35,6 +35,12 @@ public class ChatEngine : MonoBehaviour
     {
         if (bInChat)
             return;
+
+        chatAnimator.SetTrigger("start");
+        chatAnimator.ResetTrigger("hide2");
+        chatAnimator.ResetTrigger("show2");
+        chatAnimator.ResetTrigger("hide3");
+        chatAnimator.ResetTrigger("show3");
 
         bInChat = true;
         currentNPC = myNPC;
@@ -123,11 +129,13 @@ public class ChatEngine : MonoBehaviour
 
     private void EndChat()
     {
+        Debug.Log("Finished Chat");
+        player.onInteract -= GoNext;
+        
         bInChat = false;
         currentNPC.TalkState(false);
         player.SetTargetNPC(null, false);
         chatAnimator.SetTrigger("endChat");
 
-        player.onInteract -= GoNext;
     }
 }

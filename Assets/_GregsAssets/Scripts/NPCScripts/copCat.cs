@@ -28,8 +28,20 @@ public class copCat : npcBase
     [SerializeField] ChatInteraction myInteraction;
     [SerializeField] TalkBox firstTalk;
 
+    public Transform[] guardPoints;
+
+    public void GoToGuard()
+    {
+        int randomPoint = Random.Range(0, guardPoints.Length);
+        agent.destination = guardPoints[randomPoint].position;
+        bHighAlert = true;
+    }
+
     private void StartTalking(Player interactingPlayer)
     {
+        if (GameObject.FindObjectOfType<ChatEngine>().bInChat)
+            return;
+
         TalkState(true);
         GameObject.FindFirstObjectByType<ChatEngine>().StartChat(this, this.transform, GetName(), firstTalk, GetColor());
     }
@@ -93,6 +105,11 @@ public class copCat : npcBase
         if (Talking())
         {
             return;
+        }
+
+        if (player == null)
+        {
+            FetchPlayer();
         }
 
         if (SeesPlayer() && bHighAlert)

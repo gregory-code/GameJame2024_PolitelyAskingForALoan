@@ -15,6 +15,12 @@ public class RegularNPC : npcBase
     [SerializeField] bool neeko;
     [SerializeField] bool alearted;
 
+    [SerializeField] bool waitingInLine;
+    bool served;
+    int positionInLine = -1;
+
+    [SerializeField] Transform[] spotsInLine;
+
     void Start()
     {
         escape = GameObject.Find("escapePoint").GetComponent<Transform>();
@@ -22,6 +28,27 @@ public class RegularNPC : npcBase
         onHeardThat += SeesGun;
         onSeesGun += SeesGun;
         currentTalk = firstTalk;
+
+        if(waitingInLine)
+        {
+            StartCoroutine(WaitingInLine());
+        }
+    }
+
+    private IEnumerator WaitingInLine()
+    {
+        while(served == false)
+        {
+            yield return new WaitForSeconds(15);
+            positionInLine++;
+            agent.destination = spotsInLine[positionInLine].position;
+
+            if (spotsInLine.Length == positionInLine)
+            {
+                served = true;
+            }
+
+        }
     }
 
     private void SeesGun()
@@ -31,7 +58,11 @@ public class RegularNPC : npcBase
 
         if (neeko == true)
         {
-            agent.destination = escape.position;
+            escape = GameObject.Find("escapePoint").GetComponent<Transform>();
+            if(agent != null)
+            {
+                agent.destination = escape.position;
+            }
             return;
         }
 
@@ -53,6 +84,9 @@ public class RegularNPC : npcBase
 
     private void StartTalking(Player interactingPlayer)
     {
+        if (GameObject.FindObjectOfType<ChatEngine>().bInChat)
+            return;
+
         TalkState(true);
         GameObject.FindFirstObjectByType<ChatEngine>().StartChat(this, this.transform, GetName(), currentTalk, GetColor());
     }

@@ -63,19 +63,25 @@ public class npcBase : MonoBehaviour
         }
     }
 
+    public void FetchPlayer()
+    {
+        player = GameObject.FindObjectOfType<Player>();
+        if (player != null)
+        {
+            player.onTakeDamage += PlayerHit;
+            player.onBlasting += HeardThat;
+            player.onHESGOTAGUN += SeesGun;
+            player.onHEHASPOOPONHISHAND += SeesPoop;
+            player.onSpecialEvent += SpecialEvent;
+            this.playerLocation = player.transform;
+        }
+    }
+
     private void FixedUpdate()
     {
         if (player == null)
         {
-            player = GameObject.FindObjectOfType<Player>();
-            if (player != null)
-            {
-                player.onTakeDamage += PlayerHit;
-                player.onBlasting += HeardThat;
-                player.onHESGOTAGUN += SeesGun;
-                this.playerLocation = player.transform;
-            }
-
+            FetchPlayer();
         }
 
         suprised.transform.position = Camera.main.WorldToScreenPoint(attachPoint.position);
@@ -83,6 +89,14 @@ public class npcBase : MonoBehaviour
         SeesPlayer();
         ShockLooking();
         Talking();
+    }
+
+    public delegate void OnSpecialEvent(string eventname);
+    public event OnSpecialEvent onSpecialEvent;
+
+    private void SpecialEvent(string eventName)
+    {
+        onSpecialEvent?.Invoke(eventName);
     }
 
     private void ShockLooking()
@@ -96,6 +110,13 @@ public class npcBase : MonoBehaviour
     private void SeesGun(bool hasIt)
     {
         playerHasGun = hasIt;
+    }
+
+    public bool playerHasPoop;
+
+    private void SeesPoop(bool hasSmelledIt)
+    {
+        playerHasPoop = true;
     }
 
     private void PlayerHit(Vector3 shotDirection, Rigidbody shotRigidbody, bool wouldKill)
@@ -188,6 +209,14 @@ public class npcBase : MonoBehaviour
             suprisedAnimator.SetTrigger("suprsied");
             StartCoroutine(Shocked());
         }
+        else if(playerHasPoop && seenGun == false)
+        {
+            seenGun = true;
+            suprisedAnimator.SetTrigger("suprsied");
+            StartCoroutine(Shocked());
+        }
+
+
         return true;
     }
 

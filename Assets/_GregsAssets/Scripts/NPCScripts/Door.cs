@@ -8,6 +8,8 @@ public class Door : MonoBehaviour
     [SerializeField] GameObject popupText;
     [SerializeField] Transform attachPoint;
 
+    [SerializeField] BoxCollider box;
+
     public delegate void OnInteract(Player interactingPlayer);
     public event OnInteract onInteract;
 
@@ -67,9 +69,20 @@ public class Door : MonoBehaviour
 
     private void Interact()
     {
-        opened = !opened;
-        doorAnimator.SetBool("Open", opened);
+        if(player.GetCurrentItemID() == 7)
+        {
+            opened = !opened;
+            doorAnimator.SetBool("Open", opened);
+            popupText.SetActive(false);
+            box.enabled = false;
 
-        onInteract?.Invoke(player);
+            onInteract?.Invoke(player);
+        }
+        else
+        {
+            GameObject.FindFirstObjectByType<Notification>().CreateNotification("Missing Vault Key!", Color.red, key);
+        }
     }
+
+    [SerializeField] Sprite key;
 }

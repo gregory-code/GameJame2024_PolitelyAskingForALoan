@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05671ac245ec32f47b581d29ec647175, type: 3}
   m_Name: Key
   m_EditorClassIdentifier: 
-  itemImage: {fileID: 0}
-  itemName: Vault Door Key
+  itemImage: {fileID: 21300000, guid: 35ff89372c4fe4fdd8ed886f7305d38f, type: 3}
+  itemName: Vault Key
   itemID: 7
