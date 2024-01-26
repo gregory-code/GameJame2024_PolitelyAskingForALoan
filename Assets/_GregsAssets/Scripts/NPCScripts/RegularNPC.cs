@@ -41,9 +41,11 @@ public class RegularNPC : npcBase
         {
             yield return new WaitForSeconds(15);
             positionInLine++;
-            agent.destination = spotsInLine[positionInLine].position;
 
-            if (spotsInLine.Length == positionInLine)
+            if(agent != null)
+                agent.destination = spotsInLine[positionInLine].position;
+
+            if (positionInLine == spotsInLine.Length - 1)
             {
                 served = true;
             }

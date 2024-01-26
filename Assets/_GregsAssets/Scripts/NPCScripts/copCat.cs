@@ -30,11 +30,14 @@ public class copCat : npcBase
 
     public Transform[] guardPoints;
 
+    bool spawnedIn;
+
     public void GoToGuard()
     {
         int randomPoint = Random.Range(0, guardPoints.Length);
         agent.destination = guardPoints[randomPoint].position;
-        bHighAlert = true;
+        spawnedIn = true;
+        CheckHighAlert();
     }
 
     private void StartTalking(Player interactingPlayer)
@@ -62,8 +65,8 @@ public class copCat : npcBase
 
     private void CopCatAlert()
     {
-        StopAllCoroutines();
         CheckHighAlert();
+        StopAllCoroutines();
     }
 
     private void Update()
@@ -153,6 +156,7 @@ public class copCat : npcBase
 
     private void ShootAtPlayer()
     {
+        spawnedIn = false;
         currentshoot = Mathf.Lerp(currentshoot, 0, shootingSpeed * Time.deltaTime);
         if(currentshoot <= 0.1f)
         {
@@ -195,9 +199,12 @@ public class copCat : npcBase
 
     private IEnumerator LostPlayer()
     {
-        yield return new WaitForSeconds(GetAttentionSpan());
-        agent.isStopped = true;
-        bFoundPlayer = false;
+        if (spawnedIn == false)
+        {
+            yield return new WaitForSeconds(GetAttentionSpan());
+            agent.isStopped = true;
+            bFoundPlayer = false;
+        }
     }
 
 }

@@ -97,6 +97,13 @@ public class npcBase : MonoBehaviour
     private void SpecialEvent(string eventName)
     {
         onSpecialEvent?.Invoke(eventName);
+
+        if (eventName == "StartRun")
+        {
+            seenGun = true;
+            suprisedAnimator.SetTrigger("suprsied");
+            StartCoroutine(Shocked());
+        }
     }
 
     private void ShockLooking()
@@ -159,11 +166,15 @@ public class npcBase : MonoBehaviour
         npcAnimator.SetBool("talking", state);
     }
 
+    [SerializeField] private bool waitinginafkldjsafkljasdklfjsla;
+
     public bool Talking()
     {
         if (bTalking)
         {
-            agent.isStopped = true;
+            if(waitinginafkldjsafkljasdklfjsla == false)
+                agent.isStopped = true;
+
             LookAtPlayer(3);
             return true;
         }

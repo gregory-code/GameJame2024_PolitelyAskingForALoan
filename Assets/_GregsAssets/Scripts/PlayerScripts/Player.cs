@@ -153,6 +153,7 @@ public class Player : MonoBehaviour
 
     private void FinishSelect()
     {
+        Debug.Log("Selected Item");
         if (currentItem == null)
             return;
 
