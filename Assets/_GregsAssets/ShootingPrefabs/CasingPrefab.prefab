@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7791486788655378091, guid: d7be3d3183554334d89dc00f6ebc26af, type: 3}
+  - {fileID: 2100000, guid: 6ef30f97eac82fb42ad8525fa14e09d2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 5190790409210939967}
   - component: {fileID: 4568330747578081251}
   - component: {fileID: 5111711037481109980}
+  - component: {fileID: 3623133269100863840}
   m_Layer: 0
   m_Name: CasingPrefab
   m_TagString: Untagged
@@ -159,9 +160,22 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.03, y: 0.03, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3623133269100863840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991851596284119397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 623cb576392339447a2369c15db4b8bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  box: {fileID: 5111711037481109980}

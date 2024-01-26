@@ -15,7 +15,8 @@ public class MainMenu : UIRenderer
 
     public void StartGame()
     {
-        SceneManager.LoadScene("gameScene");
+        Time.timeScale = 1;
+        GameObject.FindFirstObjectByType<loadingScreen>().StartLoadScene("testScene");
     }
 
     public void ChangeSettings()

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be6febde3c532e849bf491d4ace475a9, type: 3}
+  m_Name: Telle_Gun
+  m_EditorClassIdentifier: 
+  dialogues:
+  - Whoa whoa whoa!
+  - What do you want? You could have just asked...
+  hasOption: 1
+  options: 2
+  specialEvent:
+  - 
+  - StartRun
+  - 
+  optionSprites:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 35ff89372c4fe4fdd8ed886f7305d38f, type: 3}
+  - {fileID: 0}
+  optionText:
+  - Skip the line
+  - The vault key
+  - 
+  optionItemID: 000000000000000000000000
+  optionTalk:
+  - {fileID: 11400000, guid: 1cd3ae12ed53ce54f959b9e7554b2bef, type: 2}
+  - {fileID: 11400000, guid: e5bd878fd8c5bd041be055dc23142d68, type: 2}
+  - {fileID: 0}

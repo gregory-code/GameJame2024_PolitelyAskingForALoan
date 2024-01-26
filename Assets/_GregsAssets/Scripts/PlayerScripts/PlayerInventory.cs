@@ -29,6 +29,18 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    public void RemoveItem(ItemBase itemToRemove)
+    {
+        foreach (ItemSlot slot in itemSlots)
+        {
+            if (slot.CheckItemID() == itemToRemove.GetID())
+            {
+                slot.RemoveItem();
+                return;
+            }
+        }
+    }
+
     public ItemSlot[] GetSlots()
     {
         return itemSlots;
@@ -37,7 +49,7 @@ public class PlayerInventory : MonoBehaviour
     private void LateUpdate()
     {
         float alpha = (bInventory) ? 1 : 0;
-        inventoryGroup.alpha = Mathf.Lerp(inventoryGroup.alpha, alpha, 0.1f);
+        inventoryGroup.alpha = Mathf.Lerp(inventoryGroup.alpha, alpha, 0.2f);
     }
 
     private void ToggleInventory(bool state)

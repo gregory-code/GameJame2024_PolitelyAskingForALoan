@@ -3,7 +3,21 @@ guid: 4de39f39494e2c441bdc0c3096073aef
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - playerCamera: {instanceID: 0}
+  - playerInventory: {instanceID: 0}
+  - characterController: {instanceID: 0}
+  - regularSnapshot: {fileID: 24500006, guid: 0e612b628fda9bf43b70f75132cd6d00, type: 2}
+  - mutedSnapshot: {fileID: -9015635742348402095, guid: 0e612b628fda9bf43b70f75132cd6d00, type: 2}
+  - followTransform: {instanceID: 0}
+  - racoonAnimator: {instanceID: 0}
+  - headTransform: {instanceID: 0}
+  - nothingItem: {instanceID: 0}
+  - gunItem: {instanceID: 0}
+  - nuke: {instanceID: 0}
+  - nade: {instanceID: 0}
+  - handTransform: {instanceID: 0}
+  - bulletImage: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

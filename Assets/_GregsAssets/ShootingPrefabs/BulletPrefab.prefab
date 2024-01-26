@@ -4824,6 +4824,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletHolePrefab: {fileID: 1807538112762021173, guid: dd740d6861262f94e9df97c0255e3759, type: 3}
+  headShotSparklePrefab: {fileID: 1438902432858508, guid: 393dd0d88351ff541bbf5a4072a5e0ef, type: 3}
+  bodyShotSparklePrefab: {fileID: 1257899049973296, guid: b5399474f41faa54a81cc5cd91458716, type: 3}
 --- !u!65 &6960976821732095434
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19218,13 +19220,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
+  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_VertexStreams: 0001030405
+  m_VertexStreams: 000304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}

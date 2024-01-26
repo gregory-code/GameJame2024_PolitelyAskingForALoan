@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be6febde3c532e849bf491d4ace475a9, type: 3}
+  m_Name: Telle_First
+  m_EditorClassIdentifier: 
+  dialogues:
+  - Excuse me, you can't skip in line!
+  - I'll tend to you whenever I finish helping these fine folks.
+  hasOption: 1
+  options: 2
+  specialEvent:
+  - 
+  - StartRun
+  - 
+  optionSprites:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 1fe0092b7a16beb48a2e845c89e4dec2, type: 3}
+  - {fileID: 0}
+  optionText:
+  - I'll wait.
+  - Maybe this will change your mind.
+  optionItemID: 000000000000000000000000
+  optionTalk:
+  - {fileID: 11400000, guid: 72ee91af1cc0f2146bfc2d5335f4f0f7, type: 2}
+  - {fileID: 11400000, guid: 2afc83ba291740a41aa3a85e81a5debc, type: 2}
+  - {fileID: 0}
