@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Telle : npcBase
 {
@@ -9,6 +10,7 @@ public class Telle : npcBase
     [SerializeField] TalkBox firstTalk;
     [SerializeField] TalkBox gaveKey;
     [SerializeField] TalkBox gunTalk;
+    [SerializeField] TalkBox AskForLoan;
 
     TalkBox currentTalk;
 
@@ -21,13 +23,24 @@ public class Telle : npcBase
         currentTalk = firstTalk;
     }
 
+    private IEnumerator AskLoan()
+    {
+        yield return new WaitForSeconds(90);
+        currentTalk = AskForLoan;
+    }
+
     private void SpecialEvent(string eventname)
     {
         switch(eventname)
         {
             case "StartRun":
                 gunTalk = gaveKey;
+                AskForLoan = gaveKey;
                 currentTalk = gaveKey;
+                break;
+
+            case "Credits":
+                SceneManager.LoadScene("creditsScene");
                 break;
         }
     }

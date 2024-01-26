@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be6febde3c532e849bf491d4ace475a9, type: 3}
+  m_Name: Telle_Loan
+  m_EditorClassIdentifier: 
+  dialogues:
+  - Thank you for waiting!
+  - You'd like to take out a loan?
+  - I'm sorry!
+  - You don't have an account with our bank.
+  hasOption: 1
+  options: 3
+  specialEvent:
+  - Credits
+  - Credits
+  - Credits
+  optionSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  optionText:
+  - Go Home
+  - Give Up
+  - Roll Credits
+  optionItemID: 000000000000000000000000
+  optionTalk:
+  - {fileID: 11400000, guid: 13e7ab8321970954eb59636dc2fc15c8, type: 2}
+  - {fileID: 11400000, guid: e56006f9d9a52de449c8f80104782086, type: 2}
+  - {fileID: 11400000, guid: e12608a382c073441b2a77c9a5b9c5b4, type: 2}

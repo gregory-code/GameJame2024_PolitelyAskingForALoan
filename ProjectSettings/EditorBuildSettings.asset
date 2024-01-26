@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_GregsAssets/Scenes/testScene.unity
     guid: f8c1a25638f72aa42a58cf91b436626d
+  - enabled: 1
+    path: Assets/_GregsAssets/Scenes/creditsScene.unity
+    guid: da8c8e02c0975a042b900dfb1621076a
   m_configObjects: {}

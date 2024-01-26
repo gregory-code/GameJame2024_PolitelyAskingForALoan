@@ -2144,7 +2144,7 @@ MonoBehaviour:
   casingRightSpeed: 0.2
   casingSpinSpeed: 3
   myInteraction: {fileID: 5814049966693763763}
-  firstTalk: {fileID: 11400000, guid: 9f81a1e8f8b87cd4bb0a56654cc8f637, type: 2}
+  firstTalk: {fileID: 11400000, guid: 0966b15808f37ab46954f325061eeb42, type: 2}
   guardPoints: []
 --- !u!65 &1777422543077364120
 BoxCollider:

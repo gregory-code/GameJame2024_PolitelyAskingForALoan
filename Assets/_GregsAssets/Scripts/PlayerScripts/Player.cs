@@ -191,9 +191,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        float lerp = (bEpicMusic) ? 1 : 0.006f;
+        float lerp = (bEpicMusic) ? 1 : 0;
+        float reverseLerp = (bEpicMusic) ? 0 : 1;
         float volume = GameObject.Find("robed_a_bank").GetComponent<AudioSource>().volume;
-        GameObject.Find("robed_a_bank").GetComponent<AudioSource>().volume = Mathf.Lerp(volume, lerp, 5 * Time.deltaTime);
+        GameObject.Find("robed_a_bank").GetComponent<AudioSource>().volume = Mathf.Lerp(volume, lerp, 10 * Time.deltaTime);
+        GameObject.Find("bankTheme").GetComponent<AudioSource>().volume = Mathf.Lerp(volume, reverseLerp, 10 * Time.deltaTime);
 
         if (bDead)
             return;
