@@ -95,7 +95,10 @@ public class RegularNPC : npcBase
 
     public void Update()
     {
-        if(alearted)
+
+        npcAnimator.SetFloat("speed", agent.velocity.magnitude);
+
+        if (alearted)
             LookAtPlayer(rotateSpeed);
 
         if(bDead)

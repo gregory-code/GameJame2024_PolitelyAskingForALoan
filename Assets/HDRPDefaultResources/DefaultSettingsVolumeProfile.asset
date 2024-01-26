@@ -124,19 +124,19 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   length:
-    m_OverrideState: 0
-    m_Value: 0.15
+    m_OverrideState: 1
+    m_Value: 0.197
   opacity:
     m_OverrideState: 0
     m_Value: 1
   distanceScaleFactor:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0.5
   maxDistance:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 50
   minDistance:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   fadeDistance:
     m_OverrideState: 0
@@ -712,10 +712,10 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 150
   directionalTransmissionMultiplier:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   cascadeShadowSplitCount:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 4
   cascadeShadowSplit0:
     m_OverrideState: 0
