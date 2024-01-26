@@ -139,6 +139,8 @@ public class copCat : npcBase
         currentshoot = Mathf.Lerp(currentshoot, 0, shootingSpeed * Time.deltaTime);
         if(currentshoot <= 0.1f)
         {
+            npcAnimator.SetTrigger("shoot");
+
             currentshoot = 100;
             MuzzleFlash();
             ExjectCasing();
