@@ -48,7 +48,7 @@ public class Notification : MonoBehaviour
     {
         for(int i = 0; i < notifList.Count; i++)
         {
-            Vector2 notif = Vector2.Lerp(notifList[i].transform.localPosition, new Vector2(-670, (200 - 200 * notifList.IndexOf(notifList[i]))), 12 * Time.deltaTime);
+            Vector2 notif = Vector2.Lerp(notifList[i].transform.localPosition, new Vector2(-670, (150 - 200 * notifList.IndexOf(notifList[i]))), 12 * Time.deltaTime);
             notifList[i].transform.localPosition = notif;
         }
     }

@@ -13,5 +13,23 @@ MonoBehaviour:
   m_Name: Telle_First
   m_EditorClassIdentifier: 
   dialogues:
-  - Hi how have you been enjoying the whitebox?
-  - We're all working very hard to finish the game. So hold on tight!
+  - Excuse me, you can't skip in line!
+  - I'll tend to you whenever I finish helping these fine folks.
+  hasOption: 1
+  options: 2
+  specialEvent:
+  - 
+  - 
+  - 
+  optionSprites:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 1fe0092b7a16beb48a2e845c89e4dec2, type: 3}
+  - {fileID: 0}
+  optionText:
+  - I'll wait.
+  - Maybe this will change your mind.
+  optionItemID: 000000000000000000000000
+  optionTalk:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

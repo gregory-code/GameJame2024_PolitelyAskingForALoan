@@ -14,4 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogues:
   - Not getting into trouble are you?
-  - Don't pull a gun out in front of me... I'll see it.
+  hasOption: 1
+  options: 3
+  specialEvent:
+  - 
+  - 
+  - 
+  optionSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  optionText:
+  - No sir!
+  - Can I get you anything?
+  - '*Give Cupcake*'
+  optionItemID: 000000000000000000000000
+  optionTalk:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
