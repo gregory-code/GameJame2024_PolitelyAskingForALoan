@@ -62,7 +62,14 @@ public class RegularNPC : npcBase
         if(alearted)
             LookAtPlayer(rotateSpeed);
 
-        if (neeko == true)
+        if(bDead)
+        {
+
+            agent.isStopped = true;
+            return;
+        }
+
+        if (neeko == true && bDead == false)
         {
             agent.isStopped = false;
             agent.destination = escape.position;

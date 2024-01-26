@@ -15,6 +15,7 @@ public class MainMenu : UIRenderer
 
     public void StartGame()
     {
+        Time.timeScale = 1;
         GameObject.FindFirstObjectByType<loadingScreen>().StartLoadScene("testScene");
     }
 

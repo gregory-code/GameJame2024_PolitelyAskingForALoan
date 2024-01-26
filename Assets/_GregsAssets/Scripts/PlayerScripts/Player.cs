@@ -5,6 +5,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -118,7 +120,16 @@ public class Player : MonoBehaviour
         {
             itemGameObject.SetActive(false);
         }
-        if(item.GetID() == 1)
+        currentItem = item;
+        itemGameObjects[item.GetID()].SetActive(true);
+    }
+
+    private void FinishSelect()
+    {
+        if (currentItem == null)
+            return;
+
+        if (currentItem.GetID() == 1)
         {
             onHESGOTAGUN?.Invoke(true);
             racoonAnimator.SetBool("gun", true);
@@ -128,9 +139,7 @@ public class Player : MonoBehaviour
             onHESGOTAGUN?.Invoke(false);
             racoonAnimator.SetBool("gun", false);
         }
-        currentItem = item;
-        onSelectItem?.Invoke(item.GetID());
-        itemGameObjects[item.GetID()].SetActive(true);
+        onSelectItem?.Invoke(currentItem.GetID());
     }
 
     public int GetCurrentItemID()
@@ -274,6 +283,7 @@ public class Player : MonoBehaviour
         if(context.canceled)
         {
             bInventory = false;
+            FinishSelect();
             regularSnapshot.TransitionTo(0.5f);
             ManageInventory();
         }
@@ -312,6 +322,8 @@ public class Player : MonoBehaviour
             onSettings?.Invoke(bSettings);
         }
     }
+
+    private bool bEpicMusic;
 
     public void BlastingInput(InputAction.CallbackContext context)
     {
@@ -362,6 +374,12 @@ public class Player : MonoBehaviour
             {
                 racoonAnimator.SetTrigger("shoot");
 
+                if(bEpicMusic == false)
+                {
+                    bEpicMusic = true;
+                    GameObject.Find("robed_a_bank").GetComponent<AudioSource>().Play();
+                }
+
                 currentAmmo -= 1;
 
                 onBlasting?.Invoke();
@@ -394,13 +412,15 @@ public class Player : MonoBehaviour
 
     }
 
+    [SerializeField] Sprite bulletImage;
+
     public void PickUpAmmo(int amount)
     {
         if (bDead)
             return;
 
         ammoReserves += amount;
-        GameObject.FindFirstObjectByType<Notification>().CreateNotification("- Picked Up -   x" + amount + " Bullets", Color.white, null);
+        GameObject.FindFirstObjectByType<Notification>().CreateNotification("- Picked Up -   x" + amount + " Bullets", Color.white, bulletImage);
         onAddAmmo(amount);
     }
 

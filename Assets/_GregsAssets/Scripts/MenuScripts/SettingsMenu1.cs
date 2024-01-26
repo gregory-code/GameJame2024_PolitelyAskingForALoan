@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SettingsMenu1 : MonoBehaviour
 {
@@ -29,6 +30,22 @@ public class SettingsMenu1 : MonoBehaviour
     private void LateUpdate()
     {
         float alpha = (bInSettings) ? 1 : 0;
-        settingsGroup.alpha = Mathf.Lerp(settingsGroup.alpha, alpha, 0.1f);
+        settingsGroup.alpha = Mathf.Lerp(settingsGroup.alpha, alpha, 0.2f);
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1;
+        GameObject.FindFirstObjectByType<loadingScreen>().StartLoadScene("testScene");
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("mainMenu");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }
