@@ -2129,6 +2129,7 @@ MonoBehaviour:
   leg: {fileID: 8870244628635747183}
   playerHasGun: 0
   playerHasPoop: 0
+  waitinginafkldjsafkljasdklfjsla: 0
   seenGun: 0
   rangeToShoot: 9
   tooClose: 6
@@ -4559,7 +4560,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 98c79b4221f24c743be60e32328a1c7c, type: 2}
+  - {fileID: 2100000, guid: bbed507ef0217724f8f2ad52fbdc504c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

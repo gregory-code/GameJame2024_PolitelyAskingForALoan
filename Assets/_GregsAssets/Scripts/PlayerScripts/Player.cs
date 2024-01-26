@@ -250,9 +250,16 @@ public class Player : MonoBehaviour
             bDead = true;
             characterController.enabled = false;
             kills = true;
+            StartCoroutine(RestartDeath());
         }
 
         onTakeDamage?.Invoke(shotDirection, shotRigidbody, kills);
+    }
+
+    private IEnumerator RestartDeath()
+    {
+        yield return new WaitForSeconds(3f);
+        GameObject.FindFirstObjectByType<loadingScreen>().StartLoadScene("testScene");
     }
 
     private IEnumerator IFrames()
